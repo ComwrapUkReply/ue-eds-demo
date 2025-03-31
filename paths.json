@@ -1,10 +1,10 @@
 {
   "mappings": [
-    "/content/aem-boilerplate/:/",
-    "/content/aem-boilerplate/configuration:/.helix/config.json",
-    "/content/aem-boilerplate/metadata:/metadata.json"
+    "/content/comwrapuk-ue-szymon/:/",
+    "/content/comwrapuk-ue-szymon/configuration:/.helix/config.json",
+    "/content/comwrapuk-ue-szymon/metadata:/metadata.json"
   ],
   "includes": [
-    "/content/aem-boilerplate/"
+    "/content/comwrapuk-ue-szymon/"
   ]
 }
