@@ -1,5 +1,5 @@
 .block.quote {
-    border-left: 4px solid #CCC;
+    border-left: 4px solid red;
     display: flex;
     flex-direction: column;
     margin: 1rem 0;

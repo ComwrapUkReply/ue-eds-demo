@@ -206,7 +206,7 @@
          "valueType": "string",
          "name": "author",
          "label": "Author",
-         "value": ""
+         "value": "string"
        }
      ]
   }
