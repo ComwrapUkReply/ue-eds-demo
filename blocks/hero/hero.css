@@ -1,19 +1,48 @@
 .hero-container .hero-wrapper {
-  max-width: unset;
+  max-width: 1500px;
   padding: 0;
 }
 
 .hero {
   position: relative;
   padding: 40px 24px;
-  min-height: 300px;
+  min-height: 600px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-end;
+  position: relative;
+}
+  /* Add white gradient overlay from left to right (solid to transparent) */
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 60%;
+    height: 100%;
+    background: linear-gradient(to right, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0));
+    z-index: 0;
+    pointer-events: none;
+}
+
+.hero div + div {
+  position: relative;
+  z-index: 1;
 }
 
 .hero h1 {
   max-width: 1200px;
   margin-left: auto;
   margin-right: auto;
-  color: var(--background-color);
+  color: #0063be;
+}
+
+.hero h4 {
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
+  color: #0063be;
 }
 
 .hero picture {
