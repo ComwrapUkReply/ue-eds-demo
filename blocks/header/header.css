@@ -142,6 +142,10 @@ header .nav-brand {
   font-size: var(--heading-font-size-s);
   font-weight: 700;
   line-height: 1;
+  background-image: url(../../icons/logo-fresubin.png);
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
 }
 
 header nav .nav-brand img {
