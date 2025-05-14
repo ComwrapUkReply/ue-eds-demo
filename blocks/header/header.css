@@ -137,15 +137,15 @@ header nav[aria-expanded='true'] .nav-hamburger-icon::after {
 
 /* brand */
 header .nav-brand {
-  grid-area: brand;
-  flex-basis: 128px;
-  font-size: var(--heading-font-size-s);
-  font-weight: 700;
-  line-height: 1;
-  background-image: url(../../icons/logo-fresubin.png);
-  background-size: contain;
-  background-repeat: no-repeat;
-  background-position: center;
+    font-size: 0;
+    font-weight: 700;
+    line-height: 1;
+    background-image: url(../../icons/logo-fresubin.png);
+    background-size: 200px;
+    background-repeat: no-repeat;
+    background-position: center;
+    width: 200px;
+    height: 100%;
 }
 
 header nav .nav-brand img {
