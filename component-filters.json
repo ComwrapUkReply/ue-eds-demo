@@ -60,9 +60,9 @@
       "image",
       "video",
       "title",
-      "description",
-      "linkText",
-      "link"
+      "text",
+      "link",
+      "linkText"
     ]
   }
 ]
