@@ -22,14 +22,23 @@ To use the Teaser Banner block, create a table in your document with "Teaser Ban
 `| This is your compelling description that will draw users in. |`
 `| [Call to Action](https://example.com) |`
 
+Alternatively, you can separate each content element into its own row:
+
+`| Teaser Banner |`
+`|---|`
+`| ![Background Image](./media/banner-image.jpg) |`
+`| ## Your Amazing Title |`
+`| This is your compelling description text. |`
+`| [Call to Action](https://example.com) |`
+
 ## Authoring
 
 ### Structure
 
-The block requires exactly 2 rows:
+The block requires at least 2 rows:
 
 1. **Media Row**: Contains the background image or video
-2. **Content Row**: Contains the title, description, and call-to-action button
+2. **Content Rows**: Contains the title, description, and call-to-action button (can be in one row or separate rows)
 
 ### Media Row
 

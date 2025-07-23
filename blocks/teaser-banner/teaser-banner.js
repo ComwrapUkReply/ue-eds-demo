@@ -48,32 +48,7 @@ function createVideoElement(videoSrc, posterSrc = null) {
   return video;
 }
 
-/**
- * Creates the content container with title, description, and button
- * @param {HTMLElement} contentDiv - The div containing the text content
- * @returns {HTMLElement} - Styled content container
- */
-function createContentContainer(contentDiv) {
-  const contentContainer = document.createElement('div');
-  contentContainer.className = 'teaser-banner-content';
-  
-  // Process existing content elements
-  const elements = [...contentDiv.children];
-  elements.forEach((element) => {
-    if (element.tagName === 'H1' || element.tagName === 'H2' || element.tagName === 'H3') {
-      element.className = 'teaser-banner-title';
-    } else if (element.tagName === 'P' && !element.querySelector('a')) {
-      element.className = 'teaser-banner-description';
-    } else if (element.tagName === 'P' && element.querySelector('a')) {
-      const link = element.querySelector('a');
-      link.className = 'teaser-banner-button';
-      element.className = 'teaser-banner-button-container';
-    }
-    contentContainer.appendChild(element);
-  });
-  
-  return contentContainer;
-}
+
 
 /**
  * Main decoration function for the teaser-banner block
@@ -82,6 +57,9 @@ function createContentContainer(contentDiv) {
 export default function decorate(block) {
   // Get all rows from the block
   const rows = [...block.children];
+  
+  // eslint-disable-next-line no-console
+  console.log('Teaser Banner: Processing', rows.length, 'rows');
   
   if (rows.length < 2) {
     // eslint-disable-next-line no-console
@@ -139,13 +117,49 @@ export default function decorate(block) {
     }
   }
   
-  // Process the second row (content)
-  const contentRow = rows[1];
-  const contentCell = contentRow.firstElementChild;
+  // Process all remaining rows as content (combine them)
+  const contentContainer = document.createElement('div');
+  contentContainer.className = 'teaser-banner-content';
   
-  let contentContainer = null;
-  if (contentCell) {
-    contentContainer = createContentContainer(contentCell);
+  // Process rows starting from index 1 (all content rows)
+  for (let i = 1; i < rows.length; i += 1) {
+    const contentRow = rows[i];
+    const contentCell = contentRow.firstElementChild;
+    
+    // eslint-disable-next-line no-console  
+    console.log(`Teaser Banner: Processing content row ${i}:`, contentCell);
+    
+    if (contentCell) {
+      // Process all children in this cell
+      const elements = [...contentCell.children];
+      
+      // eslint-disable-next-line no-console
+      console.log(`Teaser Banner: Row ${i} has ${elements.length} elements:`, elements.map(el => `${el.tagName}: ${el.textContent?.trim()}`));
+      
+      elements.forEach((element) => {
+        // Clone the element to avoid moving it
+        const clonedElement = element.cloneNode(true);
+        
+        // Assign appropriate classes based on element type
+        if (clonedElement.tagName === 'H1' || clonedElement.tagName === 'H2' || clonedElement.tagName === 'H3') {
+          clonedElement.className = 'teaser-banner-title';
+          // eslint-disable-next-line no-console
+          console.log('Teaser Banner: Added title:', clonedElement.textContent);
+        } else if (clonedElement.tagName === 'P' && !clonedElement.querySelector('a')) {
+          clonedElement.className = 'teaser-banner-description';
+          // eslint-disable-next-line no-console
+          console.log('Teaser Banner: Added description:', clonedElement.textContent);
+        } else if (clonedElement.tagName === 'P' && clonedElement.querySelector('a')) {
+          const link = clonedElement.querySelector('a');
+          link.className = 'teaser-banner-button';
+          clonedElement.className = 'teaser-banner-button-container';
+          // eslint-disable-next-line no-console
+          console.log('Teaser Banner: Added button:', link.textContent, 'href:', link.href);
+        }
+        
+        contentContainer.appendChild(clonedElement);
+      });
+    }
   }
   
   // Create the banner wrapper
@@ -155,10 +169,8 @@ export default function decorate(block) {
   // Add media container
   bannerWrapper.appendChild(mediaContainer);
   
-  // Add content container if it exists
-  if (contentContainer) {
-    bannerWrapper.appendChild(contentContainer);
-  }
+  // Add content container
+  bannerWrapper.appendChild(contentContainer);
   
   // Add everything to the block
   block.appendChild(bannerWrapper);
