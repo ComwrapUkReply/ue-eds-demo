@@ -1,0 +1,214 @@
+/* Teaser Banner Block Styles */
+
+/* Container wrapper for full-bleed effect */
+.teaser-banner-container .teaser-banner-wrapper {
+  max-width: none;
+  padding: 0;
+  width: 100vw;
+  margin-left: 50%;
+  transform: translateX(-50%);
+}
+
+/* Main teaser banner block */
+.teaser-banner {
+  position: relative;
+  width: 100%;
+  height: 600px;
+  overflow: hidden;
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-start;
+}
+
+/* Media container - background image or video */
+.teaser-banner-media {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+}
+
+/* Image styling */
+.teaser-banner-media picture {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.teaser-banner-media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+
+/* Video styling */
+.teaser-banner-video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+
+/* Content container - positioned in bottom left */
+.teaser-banner-content {
+  position: relative;
+  z-index: 2;
+  max-width: 500px;
+  margin: 0 0 2rem 2rem;
+  padding: 2rem;
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 8px;
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+/* Title styling */
+.teaser-banner-title {
+  margin: 0 0 1rem 0;
+  font-family: var(--heading-font-family);
+  font-size: var(--heading-font-size-l);
+  font-weight: bold;
+  color: var(--text-color);
+  line-height: 1.2;
+}
+
+/* Description styling */
+.teaser-banner-description {
+  margin: 0 0 1.5rem 0;
+  font-size: var(--body-font-size-s);
+  color: var(--dark-color);
+  line-height: 1.5;
+}
+
+/* Button container */
+.teaser-banner-button-container {
+  margin: 0;
+}
+
+/* Button styling */
+.teaser-banner-button {
+  display: inline-block;
+  padding: 12px 24px;
+  background-color: var(--link-color);
+  color: white;
+  text-decoration: none;
+  border-radius: 4px;
+  font-weight: bold;
+  font-size: var(--body-font-size-s);
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  border: none;
+  cursor: pointer;
+}
+
+.teaser-banner-button:hover {
+  background-color: var(--link-hover-color);
+  transform: translateY(-2px);
+  text-decoration: none;
+  color: white;
+}
+
+.teaser-banner-button:focus {
+  outline: 2px solid var(--link-color);
+  outline-offset: 2px;
+}
+
+/* Mobile-first responsive design */
+@media (max-width: 767px) {
+  .teaser-banner {
+    height: 500px;
+  }
+  
+  .teaser-banner-content {
+    max-width: none;
+    margin: 0 1rem 1rem 1rem;
+    padding: 1.5rem;
+    width: calc(100% - 2rem);
+    box-sizing: border-box;
+  }
+  
+  .teaser-banner-title {
+    font-size: var(--heading-font-size-m);
+  }
+  
+  .teaser-banner-description {
+    font-size: var(--body-font-size-xs);
+  }
+  
+  .teaser-banner-button {
+    padding: 10px 20px;
+    font-size: var(--body-font-size-xs);
+  }
+}
+
+/* Tablet breakpoint */
+@media (min-width: 768px) and (max-width: 899px) {
+  .teaser-banner-content {
+    max-width: 400px;
+    margin: 0 0 1.5rem 1.5rem;
+  }
+  
+  .teaser-banner-title {
+    font-size: var(--heading-font-size-l);
+  }
+}
+
+/* Desktop breakpoint */
+@media (min-width: 900px) {
+  .teaser-banner {
+    height: 600px;
+  }
+  
+  .teaser-banner-content {
+    max-width: 600px;
+  }
+  
+  .teaser-banner-title {
+    font-size: var(--heading-font-size-xl);
+  }
+}
+
+/* Large desktop breakpoint */
+@media (min-width: 1200px) {
+  .teaser-banner-content {
+    max-width: 700px;
+    margin: 0 0 3rem 3rem;
+    padding: 2.5rem;
+  }
+  
+  .teaser-banner-title {
+    font-size: var(--heading-font-size-xxl);
+  }
+  
+  .teaser-banner-description {
+    font-size: var(--body-font-size-m);
+  }
+}
+
+/* Accessibility improvements */
+@media (prefers-reduced-motion: reduce) {
+  .teaser-banner-button {
+    transition: none;
+  }
+  
+  .teaser-banner-button:hover {
+    transform: none;
+  }
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  .teaser-banner-content {
+    background: rgba(255, 255, 255, 1);
+    border: 2px solid var(--text-color);
+  }
+  
+  .teaser-banner-button {
+    border: 2px solid var(--text-color);
+  }
+} 
