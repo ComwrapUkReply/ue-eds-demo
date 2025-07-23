@@ -47,22 +47,5 @@
     "components": [
       "carousel-slide"
     ]
-  },
-  {
-    "id": "carousel-slide",
-    "components": [
-      "image"
-    ]
-  },
-  {
-    "id": "teaser-banner",
-    "components": [
-      "image",
-      "video",
-      "title",
-      "text",
-      "link",
-      "linkText"
-    ]
   }
 ]
