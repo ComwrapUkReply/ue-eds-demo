@@ -85,12 +85,31 @@ export default function decorate(block) {
     carouselContainer.append(arrowsContainer);
   }
 
-  // Create dots navigation
-  let dotsContainer;
+  // Create carousel controls (play/pause + dots)
+  let controlsContainer, playPauseButton, dotsContainer, progressBar;
   if (showDots && slides.length > 1) {
+    controlsContainer = document.createElement('div');
+    controlsContainer.className = 'carousel-controls';
+    
+    // Play/Pause button
+    playPauseButton = document.createElement('button');
+    playPauseButton.className = 'carousel-play-pause';
+    playPauseButton.setAttribute('aria-label', hasAutoPlay ? 'Pause carousel' : 'Play carousel');
+    playPauseButton.innerHTML = '<span class="carousel-play-pause-icon"></span>';
+    
+    // Dots container
     dotsContainer = document.createElement('div');
     dotsContainer.className = 'carousel-dots';
     
+    // Progress bar (first element)
+    progressBar = document.createElement('div');
+    progressBar.className = 'carousel-progress-bar';
+    const progressFill = document.createElement('div');
+    progressFill.className = 'carousel-progress-fill';
+    progressBar.append(progressFill);
+    dotsContainer.append(progressBar);
+    
+    // Dots
     slides.forEach((_, index) => {
       const dot = document.createElement('button');
       dot.className = 'carousel-dot';
@@ -99,11 +118,13 @@ export default function decorate(block) {
       if (index === 0) dot.classList.add('active');
       dotsContainer.append(dot);
     });
+    
+    controlsContainer.append(playPauseButton, dotsContainer);
   }
 
   // Assemble carousel
   carouselContainer.append(carouselTrack);
-  if (dotsContainer) carouselContainer.append(dotsContainer);
+  if (controlsContainer) carouselContainer.append(controlsContainer);
   
   // Replace block content
   block.textContent = '';
@@ -114,6 +135,8 @@ export default function decorate(block) {
     prevButton,
     nextButton,
     dotsContainer,
+    playPauseButton,
+    progressBar,
     hasAutoPlay
   });
 }
@@ -124,8 +147,9 @@ function initializeCarousel(block, track, slideCount, options) {
   let touchStartX = 0;
   let touchEndX = 0;
   let isTransitioning = false;
+  let isPlaying = hasAutoPlay;
 
-  const { prevButton, nextButton, dotsContainer, hasAutoPlay } = options;
+  const { prevButton, nextButton, dotsContainer, playPauseButton, progressBar, hasAutoPlay } = options;
 
   // Update carousel position
   function updateCarousel(slideIndex, animate = true) {
@@ -158,6 +182,13 @@ function initializeCarousel(block, track, slideCount, options) {
     // Update arrow states
     if (prevButton) prevButton.disabled = currentSlide === 0;
     if (nextButton) nextButton.disabled = currentSlide === slideCount - 1;
+    
+    // Update progress bar
+    if (progressBar) {
+      const progressFill = progressBar.querySelector('.carousel-progress-fill');
+      const progress = ((currentSlide + 1) / slideCount) * 100;
+      progressFill.style.width = `${progress}%`;
+    }
   }
 
   // Auto-play functionality
@@ -174,6 +205,17 @@ function initializeCarousel(block, track, slideCount, options) {
     if (autoPlayTimer) {
       clearInterval(autoPlayTimer);
       autoPlayTimer = null;
+    }
+    isPlaying = false;
+    updatePlayPauseButton();
+  }
+  
+  function updatePlayPauseButton() {
+    if (playPauseButton) {
+      playPauseButton.setAttribute('aria-label', isPlaying ? 'Pause carousel' : 'Play carousel');
+      playPauseButton.innerHTML = isPlaying ? 
+        '<span class="carousel-pause-icon">⏸</span>' : 
+        '<span class="carousel-play-icon">▶</span>';
     }
   }
 
@@ -195,8 +237,12 @@ function initializeCarousel(block, track, slideCount, options) {
       }
     }
     
-    if (hasAutoPlay) {
-      setTimeout(startAutoPlay, 1000); // Restart auto-play after 1 second
+    if (hasAutoPlay && isPlaying) {
+      setTimeout(() => {
+        startAutoPlay();
+        isPlaying = true;
+        updatePlayPauseButton();
+      }, 1000); // Restart auto-play after 1 second
     }
   }
 
@@ -205,7 +251,13 @@ function initializeCarousel(block, track, slideCount, options) {
     prevButton.addEventListener('click', () => {
       stopAutoPlay();
       updateCarousel(currentSlide - 1);
-      if (hasAutoPlay) setTimeout(startAutoPlay, 3000);
+      if (hasAutoPlay && isPlaying) {
+        setTimeout(() => {
+          startAutoPlay();
+          isPlaying = true;
+          updatePlayPauseButton();
+        }, 3000);
+      }
     });
   }
 
@@ -213,7 +265,26 @@ function initializeCarousel(block, track, slideCount, options) {
     nextButton.addEventListener('click', () => {
       stopAutoPlay();
       updateCarousel(currentSlide + 1);
-      if (hasAutoPlay) setTimeout(startAutoPlay, 3000);
+      if (hasAutoPlay && isPlaying) {
+        setTimeout(() => {
+          startAutoPlay();
+          isPlaying = true;
+          updatePlayPauseButton();
+        }, 3000);
+      }
+    });
+  }
+  
+  // Play/Pause button event listener
+  if (playPauseButton) {
+    playPauseButton.addEventListener('click', () => {
+      if (isPlaying) {
+        stopAutoPlay();
+      } else {
+        isPlaying = true;
+        startAutoPlay();
+        updatePlayPauseButton();
+      }
     });
   }
 
@@ -223,7 +294,13 @@ function initializeCarousel(block, track, slideCount, options) {
         stopAutoPlay();
         const slideIndex = parseInt(e.target.dataset.slideIndex, 10);
         updateCarousel(slideIndex);
-        if (hasAutoPlay) setTimeout(startAutoPlay, 3000);
+        if (hasAutoPlay && isPlaying) {
+          setTimeout(() => {
+            startAutoPlay();
+            isPlaying = true;
+            updatePlayPauseButton();
+          }, 3000);
+        }
       }
     });
   }
@@ -244,20 +321,37 @@ function initializeCarousel(block, track, slideCount, options) {
       e.preventDefault();
       stopAutoPlay();
       updateCarousel(currentSlide - 1);
-      if (hasAutoPlay) setTimeout(startAutoPlay, 3000);
+      if (hasAutoPlay && isPlaying) {
+        setTimeout(() => {
+          startAutoPlay();
+          isPlaying = true;
+          updatePlayPauseButton();
+        }, 3000);
+      }
     } else if (e.key === 'ArrowRight' && currentSlide < slideCount - 1) {
       e.preventDefault();
       stopAutoPlay();
       updateCarousel(currentSlide + 1);
-      if (hasAutoPlay) setTimeout(startAutoPlay, 3000);
+      if (hasAutoPlay && isPlaying) {
+        setTimeout(() => {
+          startAutoPlay();
+          isPlaying = true;
+          updatePlayPauseButton();
+        }, 3000);
+      }
     }
   });
 
   // Initialize
   updateCarousel(0, false);
+  updatePlayPauseButton();
   
   if (hasAutoPlay && slideCount > 1) {
-    setTimeout(startAutoPlay, 2000); // Start auto-play after 2 seconds
+    isPlaying = true;
+    setTimeout(() => {
+      startAutoPlay();
+      updatePlayPauseButton();
+    }, 2000); // Start auto-play after 2 seconds
   }
 
   // Handle window resize
