@@ -1,11 +1,10 @@
 /* Carousel Base Styles - Mobile First */
 .carousel {
   position: relative;
-  width: 100%;
+  width: 100vw; /* Full bleed width */
+  margin-left: calc(-50vw + 50%); /* Center and extend full width */
   overflow: hidden;
   background-color: #0C2863; /* Brand/Fresenius Kabi Dark Blue */
-  border-radius: 12px;
-  box-shadow: 0 4px 20px rgba(12, 40, 99, 0.15);
   font-family: 'Albert Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
 }
 
@@ -13,13 +12,15 @@
   position: relative;
   width: 100%;
   height: 100%;
+  max-width: 1920px; /* Max container width from Figma */
+  margin: 0 auto; /* Center the container */
 }
 
 .carousel-track {
   display: flex;
   width: 100%;
   transition: transform 300ms ease-in-out;
-  height: 650px;
+  height: 792px; /* Full height from Figma including padding */
 }
 
 .carousel-slide {
@@ -29,31 +30,45 @@
   position: relative;
   display: flex;
   flex-direction: column;
-  background-color: #0C2863; /* Brand/Fresenius Kabi Dark Blue */
+  background-color: transparent; /* Background handled by parent */
   align-items: center;
-  padding: 40px 20px;
+  padding: 71px 120px; /* Padding from Figma design */
   gap: 20px;
+  justify-content: center;
 }
 
 /* Mobile - Stack vertically */
 @media (max-width: 599px) {
+  .carousel {
+    width: 100vw;
+    margin-left: calc(-50vw + 50%);
+  }
+
+  .carousel-track {
+    height: auto;
+    min-height: 600px;
+  }
+
   .carousel-slide {
     flex-direction: column;
-    padding: 30px 16px;
-    gap: 24px;
+    padding: 64px 16px; /* Match Figma mobile padding */
+    gap: 56px; /* Gap between content and image from Figma */
   }
 
   .carousel-slide-content {
     flex: none;
-    order: 2;
-    text-align: center;
+    order: 1;
+    text-align: left;
+    width: 100%;
+    max-width: 328px; /* Content width from Figma mobile */
   }
 
   .carousel-slide-image {
     flex: none;
-    order: 1;
+    order: 2;
     width: 100%;
-    max-width: 400px;
+    max-width: 328px; /* Image width from Figma mobile */
+    height: 176px; /* Image height from Figma mobile */
   }
 
   .carousel-slide-content h1,
@@ -62,48 +77,46 @@
   .carousel-slide-content h4,
   .carousel-slide-content h5,
   .carousel-slide-content h6 {
-    font-size: 32px;
-    line-height: 36px;
-    margin-bottom: 24px;
+    font-size: 36px; /* Mobile/H2 from Figma */
+    line-height: 42px;
+    margin-bottom: 40px; /* Gap from Figma */
   }
 
   .carousel-slide-content p {
-    font-size: 16px;
+    font-size: 16px; /* Mobile/Body from Figma */
     line-height: 24px;
     margin: 0 0 24px 0;
-    text-align: center;
+    text-align: left;
   }
 
   .carousel-slide-content .carousel-button {
     margin-left: 0;
-    font-size: 16px;
-    min-width: 180px;
-    height: 40px;
+    font-size: 18px;
+    padding: 8px 24px;
+    background-color: #FFFFFF;
+    color: #3D95F4; /* Light Blue from Figma */
   }
 
   .carousel-slide-image img {
-    height: 300px;
+    height: 176px;
+    width: 100%;
+    object-fit: cover;
   }
 
   .carousel-controls {
-    bottom: 20px;
-    gap: 8px;
+    bottom: 64px; /* Position from Figma */
+    gap: 12px;
   }
 
   .carousel-play-pause {
-    width: 40px;
-    height: 40px;
+    width: 48px;
+    height: 48px;
   }
 
   .carousel-dots {
-    padding: 16px;
-    gap: 12px;
-    height: 40px;
-  }
-
-  .carousel-progress-bar {
-    width: 30px;
-    height: 6px;
+    padding: 20px;
+    gap: 16px;
+    height: 48px;
   }
 }
 
@@ -201,7 +214,7 @@
 /* Carousel Controls Container */
 .carousel-controls {
   position: absolute;
-  bottom: 35px;
+  bottom: 35px; /* Distance from bottom in Figma */
   left: 50%;
   transform: translateX(-50%);
   display: flex;
@@ -344,24 +357,25 @@
 /* Tablet Styles */
 @media (min-width: 600px) {
   .carousel-track {
-    height: 650px;
+    height: 792px; /* Full height from Figma */
   }
 
   .carousel-slide {
     flex-direction: row;
     align-items: center;
-    padding: 0 40px 0 80px;
-    gap: 30px;
+    padding: 71px 80px; /* Adjusted padding */
+    gap: 40px;
+    justify-content: center;
   }
 
   .carousel-slide-content {
-    flex: 0 0 500px;
+    flex: 0 0 600px; /* Adjusted width */
     order: 1;
     text-align: left;
   }
 
   .carousel-slide-image {
-    flex: 0 0 500px;
+    flex: 0 0 600px; /* Adjusted width */
     order: 2;
   }
 
@@ -371,20 +385,20 @@
   .carousel-slide-content h4,
   .carousel-slide-content h5,
   .carousel-slide-content h6 {
-    font-size: 48px;
-    line-height: 56px;
-    margin-bottom: 32px;
+    font-size: 56px; /* Scaled from desktop */
+    line-height: 64px;
+    margin-bottom: 40px;
   }
 
   .carousel-slide-content p {
     font-size: 18px;
     line-height: 28px;
-    margin: 0 0 24px 32px;
+    margin: 0 0 28px 40px; /* Adjusted margin */
     text-align: left;
   }
 
   .carousel-slide-content .carousel-button {
-    margin-left: 32px;
+    margin-left: 40px; /* Adjusted margin */
     font-size: 18px;
     min-width: 200px;
     height: 44px;
@@ -397,29 +411,26 @@
 
 /* Desktop Styles */
 @media (min-width: 900px) {
-  .carousel {
-    border-radius: 12px;
-  }
-
   .carousel-track {
-    height: 650px;
+    height: 792px; /* Full height from Figma including padding */
   }
 
   .carousel-slide {
     flex-direction: row;
     align-items: center;
-    padding: 0 80px 0 120px;
+    padding: 71px 120px; /* Exact padding from Figma */
     gap: 40px;
+    justify-content: center;
   }
 
   .carousel-slide-content {
-    flex: 0 0 740px;
+    flex: 0 0 740px; /* Exact width from Figma */
     order: 1;
     text-align: left;
   }
 
   .carousel-slide-image {
-    flex: 0 0 740px;
+    flex: 0 0 740px; /* Exact width from Figma */
     order: 2;
   }
 
@@ -429,27 +440,32 @@
   .carousel-slide-content h4,
   .carousel-slide-content h5,
   .carousel-slide-content h6 {
-    font-size: 64px;
+    font-size: 64px; /* Desktop/H2 from Figma */
     line-height: 72px;
-    margin-bottom: 48px;
+    margin-bottom: 48px; /* Gap from Figma */
   }
 
   .carousel-slide-content p {
-    font-size: 20px;
+    font-size: 20px; /* Desktop/Body from Figma */
     line-height: 32px;
-    margin: 0 0 32px 48px;
+    margin: 0 0 32px 48px; /* Left margin from Figma */
     text-align: left;
+    max-width: 600px; /* Max width for text */
   }
 
   .carousel-slide-content .carousel-button {
-    margin-left: 48px;
-    font-size: 20px;
+    margin-left: 48px; /* Left margin from Figma */
+    font-size: 20px; /* Desktop/H6 from Figma */
     min-width: 220px;
     height: 48px;
   }
 
   .carousel-slide-image img {
-    height: 555px;
+    height: 555px; /* Exact height from Figma */
+  }
+
+  .carousel-controls {
+    bottom: 35px; /* Position from Figma */
   }
 }
 

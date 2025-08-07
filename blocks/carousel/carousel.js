@@ -36,18 +36,41 @@ export default function decorate(block) {
     
     moveInstrumentation(row, slide);
     
-    // Move content from row to slide
-    while (row.firstElementChild) {
-      const element = row.firstElementChild;
-      
+    // Create content container
+    const contentContainer = document.createElement('div');
+    contentContainer.className = 'carousel-slide-content';
+    
+    // Process each element in the row
+    const elements = [...row.children];
+    elements.forEach((element) => {
       // Handle images
       if (element.querySelector('picture')) {
         element.className = 'carousel-slide-image';
+        slide.append(element);
       } else if (element.textContent.trim()) {
-        element.className = 'carousel-slide-content';
+        // Determine if it's title or text based on content or position
+        const isTitle = element.querySelector('h1, h2, h3, h4, h5, h6') || 
+                       elements.indexOf(element) === elements.findIndex(el => !el.querySelector('picture'));
+        
+        if (isTitle) {
+          const titleDiv = document.createElement('div');
+          titleDiv.className = 'carousel-slide-content-title';
+          titleDiv.innerHTML = element.innerHTML;
+          moveInstrumentation(element, titleDiv);
+          contentContainer.append(titleDiv);
+        } else {
+          const textDiv = document.createElement('div');
+          textDiv.className = 'carousel-slide-content-text';
+          textDiv.innerHTML = element.innerHTML;
+          moveInstrumentation(element, textDiv);
+          contentContainer.append(textDiv);
+        }
       }
-      
-      slide.append(element);
+    });
+    
+    // Only append content container if it has children
+    if (contentContainer.children.length > 0) {
+      slide.append(contentContainer);
     }
     
     carouselTrack.append(slide);
@@ -147,9 +170,9 @@ function initializeCarousel(block, track, slideCount, options) {
   let touchStartX = 0;
   let touchEndX = 0;
   let isTransitioning = false;
-  let isPlaying = hasAutoPlay;
 
   const { prevButton, nextButton, dotsContainer, playPauseButton, progressBar, hasAutoPlay } = options;
+  let isPlaying = hasAutoPlay;
 
   // Update carousel position
   function updateCarousel(slideIndex, animate = true) {
