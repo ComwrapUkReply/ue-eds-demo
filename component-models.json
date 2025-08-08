@@ -211,6 +211,48 @@
      ]
   },
   {
+    "id": "carousel",
+    "fields": [
+      {
+        "component": "boolean",
+        "name": "autoplay",
+        "label": "Autoplay",
+        "value": true,
+        "description": "Enable automatic slide transitions"
+      },
+      {
+        "component": "number",
+        "name": "interval",
+        "label": "Interval (seconds)",
+        "value": 6,
+        "min": 1,
+        "max": 30,
+        "description": "Time between automatic slide transitions"
+      },
+      {
+        "component": "boolean",
+        "name": "loop",
+        "label": "Loop",
+        "value": true,
+        "description": "Loop back to first slide after last slide"
+      },
+      {
+        "component": "boolean",
+        "name": "showDots",
+        "label": "Show Dots",
+        "value": true,
+        "description": "Show pagination dots"
+      },
+      {
+        "component": "boolean",
+        "name": "showArrows",
+        "label": "Show Arrows",
+        "value": false,
+        "description": "Show navigation arrows"
+      }
+    ]
+  },
+  {
     "id": "carousel-slide",
     "fields": [
       {

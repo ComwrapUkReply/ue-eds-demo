@@ -20,7 +20,9 @@
   display: flex;
   width: 100%;
   transition: transform 300ms ease-in-out;
-  height: 792px; /* Full height from Figma including padding */
+  min-height: 60vh;
+  max-height: 90vh;
+  height: auto;
 }
 
 .carousel-slide {
@@ -30,11 +32,12 @@
   position: relative;
   display: flex;
   flex-direction: column;
-  background-color: transparent; /* Background handled by parent */
+  background-color: transparent;
   align-items: center;
-  padding: 71px 120px; /* Padding from Figma design */
-  gap: 20px;
+  padding: 2rem 1rem;
+  gap: 1rem;
   justify-content: center;
+  box-sizing: border-box;
 }
 
 /* Mobile - Stack vertically */
@@ -45,30 +48,37 @@
   }
 
   .carousel-track {
-    height: auto;
-    min-height: 600px;
+    min-height: 70vh;
+    max-height: 95vh;
   }
 
   .carousel-slide {
     flex-direction: column;
-    padding: 64px 16px; /* Match Figma mobile padding */
-    gap: 56px; /* Gap between content and image from Figma */
+    padding: 1rem 0.75rem;
+    gap: 1.5rem;
   }
 
   .carousel-slide-content {
-    flex: none;
+    flex: 1;
     order: 1;
     text-align: left;
     width: 100%;
-    max-width: 328px; /* Content width from Figma mobile */
+    max-width: min(90vw, 500px);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
   }
 
   .carousel-slide-image {
-    flex: none;
+    flex: 1;
     order: 2;
     width: 100%;
-    max-width: 328px; /* Image width from Figma mobile */
-    height: 176px; /* Image height from Figma mobile */
+    max-width: min(90vw, 500px);
+    min-height: 20vh;
+    max-height: 40vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 
   .carousel-slide-content h1,
@@ -77,15 +87,15 @@
   .carousel-slide-content h4,
   .carousel-slide-content h5,
   .carousel-slide-content h6 {
-    font-size: 36px; /* Mobile/H2 from Figma */
-    line-height: 42px;
-    margin-bottom: 40px; /* Gap from Figma */
+    font-size: clamp(1.5rem, 4vw, 2.5rem);
+    line-height: 1.2;
+    margin-bottom: clamp(1rem, 3vw, 2rem);
   }
 
   .carousel-slide-content p {
-    font-size: 16px; /* Mobile/Body from Figma */
-    line-height: 24px;
-    margin: 0 0 24px 0;
+    font-size: clamp(0.875rem, 2.5vw, 1.125rem);
+    line-height: 1.5;
+    margin: 0 0 clamp(1rem, 2vw, 1.5rem) 0;
     text-align: left;
   }
 
@@ -98,9 +108,10 @@
   }
 
   .carousel-slide-image img {
-    height: 176px;
     width: 100%;
+    height: 100%;
     object-fit: cover;
+    border-radius: 8px;
   }
 
   .carousel-controls {
@@ -126,17 +137,19 @@
 
 /* Slide Content */
 .carousel-slide-content {
-  flex: 0 0 740px;
+  flex: 1;
   display: flex;
   flex-direction: column;
   justify-content: center;
   padding: 0;
   background: transparent;
   order: 1;
+  max-width: 50vw;
+  min-width: 300px;
 }
 
 .carousel-slide-image {
-  flex: 0 0 740px;
+  flex: 1;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -144,11 +157,15 @@
   line-height: 0;
   border-radius: 8px;
   order: 2;
+  max-width: 50vw;
+  min-width: 300px;
+  max-height: 60vh;
 }
 
 .carousel-slide-image img {
   width: 100%;
-  height: 555px;
+  height: 100%;
+  max-height: 60vh;
   object-fit: cover;
   display: block;
   border-radius: 8px;
@@ -161,43 +178,43 @@
 .carousel-slide-content h5,
 .carousel-slide-content h6 {
   margin-top: 0;
-  margin-bottom: 48px;
-  color: #3D95F4; /* Typography/Light Blue */
+  margin-bottom: clamp(1rem, 3vw, 2rem);
+  color: #3D95F4;
   font-family: 'Albert Sans', sans-serif;
   font-weight: 600;
-  font-size: 64px;
-  line-height: 72px;
+  font-size: clamp(2rem, 5vw, 4rem);
+  line-height: 1.1;
   letter-spacing: -0.02em;
 }
 
 .carousel-slide-content p {
-  margin: 0 0 32px 48px;
-  color: #FFFFFF; /* Typography/Cold White */
+  margin: 0 0 clamp(1rem, 2vw, 2rem) clamp(1rem, 3vw, 3rem);
+  color: #FFFFFF;
   font-family: 'Albert Sans', sans-serif;
   font-weight: 400;
-  font-size: 20px;
-  line-height: 32px;
-  max-width: 600px;
+  font-size: clamp(1rem, 2.5vw, 1.25rem);
+  line-height: 1.6;
+  max-width: min(90%, 600px);
 }
 
 .carousel-slide-content .carousel-button {
-  margin-left: 48px;
+  margin-left: clamp(1rem, 3vw, 3rem);
   background-color: #FFFFFF;
-  color: #0073DD; /* Interaction/Primary Light */
+  color: #0073DD;
   border: none;
   border-radius: 24px;
-  padding: 8px 24px;
+  padding: clamp(0.5rem, 1vw, 0.75rem) clamp(1rem, 2vw, 1.5rem);
   font-family: 'Albert Sans', sans-serif;
   font-weight: 600;
-  font-size: 20px;
-  line-height: 32px;
+  font-size: clamp(0.875rem, 2vw, 1.25rem);
+  line-height: 1.4;
   cursor: pointer;
   transition: all 0.2s ease;
   display: inline-flex;
   align-items: center;
-  gap: 8px;
-  min-width: 220px;
-  height: 48px;
+  gap: 0.5rem;
+  min-width: clamp(180px, 20vw, 220px);
+  height: clamp(40px, 5vw, 48px);
   justify-content: center;
 }
 
@@ -322,8 +339,8 @@
 
 /* Full height variation */
 .carousel.full-height .carousel-track {
-  height: 60vh;
-  min-height: 400px;
+  min-height: 70vh;
+  max-height: 95vh;
 }
 
 /* Content overlay variation */
@@ -352,7 +369,8 @@
 
 /* Compact variation */
 .carousel.compact .carousel-track {
-  height: 300px;
+  min-height: 35vh;
+  max-height: 50vh;
 }
 
 .carousel.compact .carousel-slide-content {
@@ -367,26 +385,32 @@
 /* Tablet Styles */
 @media (min-width: 600px) {
   .carousel-track {
-    height: 792px; /* Full height from Figma */
+    min-height: 60vh;
+    max-height: 85vh;
   }
 
   .carousel-slide {
     flex-direction: row;
     align-items: center;
-    padding: 71px 80px; /* Adjusted padding */
-    gap: 40px;
+    padding: clamp(1.5rem, 4vw, 3rem) clamp(1rem, 3vw, 2rem);
+    gap: clamp(1.5rem, 4vw, 2.5rem);
     justify-content: center;
   }
 
   .carousel-slide-content {
-    flex: 0 0 600px; /* Adjusted width */
+    flex: 1;
     order: 1;
     text-align: left;
+    max-width: 50vw;
+    min-width: 280px;
   }
 
   .carousel-slide-image {
-    flex: 0 0 600px; /* Adjusted width */
+    flex: 1;
     order: 2;
+    max-width: 50vw;
+    min-width: 280px;
+    max-height: 70vh;
   }
 
   .carousel-slide-content h1,
@@ -395,15 +419,15 @@
   .carousel-slide-content h4,
   .carousel-slide-content h5,
   .carousel-slide-content h6 {
-    font-size: 56px; /* Scaled from desktop */
-    line-height: 64px;
-    margin-bottom: 40px;
+    font-size: clamp(2.5rem, 5vw, 3.5rem);
+    line-height: 1.15;
+    margin-bottom: clamp(1.5rem, 3vw, 2.5rem);
   }
 
   .carousel-slide-content p {
-    font-size: 18px;
-    line-height: 28px;
-    margin: 0 0 28px 40px; /* Adjusted margin */
+    font-size: clamp(1rem, 2.2vw, 1.125rem);
+    line-height: 1.55;
+    margin: 0 0 clamp(1.25rem, 2.5vw, 1.75rem) clamp(1.5rem, 3vw, 2.5rem);
     text-align: left;
   }
 
@@ -415,33 +439,40 @@
   }
 
   .carousel-slide-image img {
-    height: 480px;
+    max-height: 70vh;
+    height: auto;
   }
 }
 
 /* Desktop Styles */
 @media (min-width: 900px) {
   .carousel-track {
-    height: 792px; /* Full height from Figma including padding */
+    min-height: 55vh;
+    max-height: 80vh;
   }
 
   .carousel-slide {
     flex-direction: row;
     align-items: center;
-    padding: 71px 120px; /* Exact padding from Figma */
-    gap: 40px;
+    padding: clamp(2rem, 4vw, 4rem) clamp(1.5rem, 4vw, 3rem);
+    gap: clamp(2rem, 4vw, 2.5rem);
     justify-content: center;
   }
 
   .carousel-slide-content {
-    flex: 0 0 740px; /* Exact width from Figma */
+    flex: 1;
     order: 1;
     text-align: left;
+    max-width: 48vw;
+    min-width: 300px;
   }
 
   .carousel-slide-image {
-    flex: 0 0 740px; /* Exact width from Figma */
+    flex: 1;
     order: 2;
+    max-width: 48vw;
+    min-width: 300px;
+    max-height: 65vh;
   }
 
   .carousel-slide-content h1,
@@ -471,7 +502,8 @@
   }
 
   .carousel-slide-image img {
-    height: 555px; /* Exact height from Figma */
+    max-height: 65vh;
+    height: auto;
   }
 
   .carousel-controls {
@@ -482,20 +514,22 @@
 /* Large Desktop Styles */
 @media (min-width: 1200px) {
   .carousel-track {
-    height: 600px;
+    min-height: 50vh;
+    max-height: 75vh;
   }
 
   .carousel-slide-content {
-    padding: 32px;
+    padding: 0;
   }
 
   .carousel.full-height .carousel-track {
-    height: 85vh;
-    min-height: 600px;
+    min-height: 70vh;
+    max-height: 90vh;
   }
 
   .carousel.compact .carousel-track {
-    height: 450px;
+    min-height: 40vh;
+    max-height: 60vh;
   }
 }
 
