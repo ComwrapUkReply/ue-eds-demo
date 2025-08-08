@@ -3,7 +3,7 @@ import { moveInstrumentation } from '../../scripts/scripts.js';
 
 const CAROUSEL_CONFIG = {
   SLIDE_TRANSITION_DURATION: 300,
-  AUTO_PLAY_INTERVAL: 10000,
+  AUTO_PLAY_INTERVAL: 7000,
   TOUCH_THRESHOLD: 50,
   BREAKPOINTS: {
     MOBILE: 600,
@@ -16,8 +16,8 @@ export default function decorate(block) {
   
   if (slides.length === 0) return;
 
-  // Check for variations
-  const hasAutoPlay = block.classList.contains('auto-play');
+  // Check for variations - autoplay is default behavior
+  const hasAutoPlay = !block.classList.contains('no-auto-play');
   const showDots = !block.classList.contains('no-dots');
   const showArrows = !block.classList.contains('no-arrows');
 
@@ -209,7 +209,7 @@ function initializeCarousel(block, track, slideCount, options) {
     if (nextButton) nextButton.disabled = currentSlide === slideCount - 1;
     
     // Reset progress bar for new slide
-    if (progressBar) {
+    if (progressBar && hasAutoPlay && isPlaying) {
       progressStartTime = Date.now();
       updateProgressBar();
     }
@@ -253,7 +253,7 @@ function initializeCarousel(block, track, slideCount, options) {
 
   // Update progress bar to show actual autoscroll progress
   function updateProgressBar() {
-    if (!progressBar) return;
+    if (!progressBar || !hasAutoPlay || !isPlaying) return;
     
     // Clear any existing progress timer
     if (progressTimer) {
@@ -270,16 +270,13 @@ function initializeCarousel(block, track, slideCount, options) {
       const elapsed = Date.now() - progressStartTime;
       const progress = Math.min((elapsed / CAROUSEL_CONFIG.AUTO_PLAY_INTERVAL) * 100, 100);
       
-      if (progressFill) {
-        progressFill.style.width = isPlaying ? `${progress}%` : '0%';
+      if (progressFill && isPlaying) {
+        progressFill.style.width = `${progress}%`;
       }
       
       if (progress >= 100 || !isPlaying) {
         clearInterval(progressTimer);
         progressTimer = null;
-        if (progressFill && !isPlaying) {
-          progressFill.style.width = '0%';
-        }
       }
     }, 50); // Update every 50ms for smooth animation
   }
@@ -411,20 +408,11 @@ function initializeCarousel(block, track, slideCount, options) {
   updateCarousel(0, false);
   updatePlayPauseButton();
   
-  // Initialize progress bar (always show it)
-  if (progressBar) {
-    const progressFill = progressBar.querySelector('.carousel-progress-fill');
-    if (progressFill) {
-      progressFill.style.width = '0%';
-    }
-  }
-  
+  // Start autoplay immediately if enabled and multiple slides
   if (hasAutoPlay && slideCount > 1) {
     isPlaying = true;
-    setTimeout(() => {
-      startAutoPlay();
-      updatePlayPauseButton();
-    }, 2000); // Start auto-play after 2 seconds
+    startAutoPlay();
+    updatePlayPauseButton();
   }
 
   // Handle window resize
