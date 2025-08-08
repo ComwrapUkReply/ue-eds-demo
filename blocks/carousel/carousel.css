@@ -154,7 +154,6 @@
   justify-content: center;
   overflow: hidden;
   line-height: 0;
-  border-radius: 8px;
   order: 2;
   max-width: 50vw;
   min-width: 300px;
@@ -167,7 +166,6 @@
   max-height: 60vh;
   object-fit: cover;
   display: block;
-  border-radius: 8px;
 }
 
 .carousel-slide-content h1,
