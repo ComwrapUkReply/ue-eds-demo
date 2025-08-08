@@ -16,21 +16,12 @@ export default function decorate(block) {
   
   if (slides.length === 0) return;
 
-  // Read configuration from block data attributes or use defaults
-  const config = {
-    autoplay: block.dataset.autoplay !== 'false' && !block.classList.contains('no-auto-play'),
-    interval: parseInt(block.dataset.interval, 10) || 6,
-    loop: block.dataset.loop !== 'false',
-    showDots: block.dataset.showDots !== 'false' && !block.classList.contains('no-dots'),
-    showArrows: block.dataset.showArrows === 'true' || !block.classList.contains('no-arrows')
-  };
-
-  // For backward compatibility with class-based configuration
-  const hasAutoPlay = config.autoplay;
-  const showDots = config.showDots;
-  const showArrows = config.showArrows;
-  const slideInterval = config.interval * 1000; // Convert to milliseconds
-  const enableLoop = config.loop;
+  // Check for variations - autoscroll is default behavior
+  const hasAutoPlay = !block.classList.contains('no-auto-play');
+  const showDots = !block.classList.contains('no-dots');
+  const showArrows = block.classList.contains('show-arrows');
+  const slideInterval = 6000; // Default 6 seconds
+  const enableLoop = !block.classList.contains('no-loop');
 
   // Create carousel container structure
   const carouselContainer = document.createElement('div');
