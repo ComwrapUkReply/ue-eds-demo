@@ -371,12 +371,6 @@ function initializeCarousel(block, track, slideCount, options) {
   track.addEventListener('touchstart', handleTouchStart, { passive: true });
   track.addEventListener('touchend', handleTouchEnd, { passive: true });
 
-  // Pause auto-play on hover
-  if (hasAutoPlay) {
-    block.addEventListener('mouseenter', stopAutoPlay);
-    block.addEventListener('mouseleave', startAutoPlay);
-  }
-
   // Keyboard navigation
   block.addEventListener('keydown', (e) => {
     if (e.key === 'ArrowLeft' && currentSlide > 0) {
