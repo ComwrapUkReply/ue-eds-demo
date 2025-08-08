@@ -3,7 +3,7 @@ import { moveInstrumentation } from '../../scripts/scripts.js';
 
 const CAROUSEL_CONFIG = {
   SLIDE_TRANSITION_DURATION: 300,
-  AUTO_PLAY_INTERVAL: 6000,
+  AUTO_PLAY_INTERVAL: 10000,
   TOUCH_THRESHOLD: 50,
   BREAKPOINTS: {
     MOBILE: 600,
@@ -209,7 +209,7 @@ function initializeCarousel(block, track, slideCount, options) {
     if (nextButton) nextButton.disabled = currentSlide === slideCount - 1;
     
     // Reset progress bar for new slide
-    if (progressBar && isPlaying && hasAutoPlay) {
+    if (progressBar) {
       progressStartTime = Date.now();
       updateProgressBar();
     }
@@ -253,7 +253,7 @@ function initializeCarousel(block, track, slideCount, options) {
 
   // Update progress bar to show actual autoscroll progress
   function updateProgressBar() {
-    if (!progressBar || !isPlaying || !hasAutoPlay) return;
+    if (!progressBar) return;
     
     // Clear any existing progress timer
     if (progressTimer) {
@@ -270,13 +270,16 @@ function initializeCarousel(block, track, slideCount, options) {
       const elapsed = Date.now() - progressStartTime;
       const progress = Math.min((elapsed / CAROUSEL_CONFIG.AUTO_PLAY_INTERVAL) * 100, 100);
       
-      if (progressFill && isPlaying) {
-        progressFill.style.width = `${progress}%`;
+      if (progressFill) {
+        progressFill.style.width = isPlaying ? `${progress}%` : '0%';
       }
       
       if (progress >= 100 || !isPlaying) {
         clearInterval(progressTimer);
         progressTimer = null;
+        if (progressFill && !isPlaying) {
+          progressFill.style.width = '0%';
+        }
       }
     }, 50); // Update every 50ms for smooth animation
   }
@@ -407,6 +410,14 @@ function initializeCarousel(block, track, slideCount, options) {
   // Initialize
   updateCarousel(0, false);
   updatePlayPauseButton();
+  
+  // Initialize progress bar (always show it)
+  if (progressBar) {
+    const progressFill = progressBar.querySelector('.carousel-progress-fill');
+    if (progressFill) {
+      progressFill.style.width = '0%';
+    }
+  }
   
   if (hasAutoPlay && slideCount > 1) {
     isPlaying = true;
