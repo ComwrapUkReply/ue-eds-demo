@@ -3,7 +3,7 @@ import { moveInstrumentation } from '../../scripts/scripts.js';
 
 const CAROUSEL_CONFIG = {
   SLIDE_TRANSITION_DURATION: 300,
-  AUTO_PLAY_INTERVAL: 5000,
+  DEFAULT_AUTO_PLAY_INTERVAL: 6000,
   TOUCH_THRESHOLD: 50,
   BREAKPOINTS: {
     MOBILE: 600,
@@ -16,10 +16,21 @@ export default function decorate(block) {
   
   if (slides.length === 0) return;
 
-  // Check for variations
-  const hasAutoPlay = block.classList.contains('auto-play');
-  const showDots = !block.classList.contains('no-dots');
-  const showArrows = !block.classList.contains('no-arrows');
+  // Read configuration from block data attributes or use defaults
+  const config = {
+    autoplay: block.dataset.autoplay !== 'false' && !block.classList.contains('no-auto-play'),
+    interval: parseInt(block.dataset.interval, 10) || 6,
+    loop: block.dataset.loop !== 'false',
+    showDots: block.dataset.showDots !== 'false' && !block.classList.contains('no-dots'),
+    showArrows: block.dataset.showArrows === 'true' || !block.classList.contains('no-arrows')
+  };
+
+  // For backward compatibility with class-based configuration
+  const hasAutoPlay = config.autoplay;
+  const showDots = config.showDots;
+  const showArrows = config.showArrows;
+  const slideInterval = config.interval * 1000; // Convert to milliseconds
+  const enableLoop = config.loop;
 
   // Create carousel container structure
   const carouselContainer = document.createElement('div');
@@ -160,19 +171,24 @@ export default function decorate(block) {
     dotsContainer,
     playPauseButton,
     progressBar,
-    hasAutoPlay
+    hasAutoPlay,
+    slideInterval,
+    enableLoop
   });
 }
 
 function initializeCarousel(block, track, slideCount, options) {
   let currentSlide = 0;
   let autoPlayTimer;
+  let progressTimer;
   let touchStartX = 0;
   let touchEndX = 0;
   let isTransitioning = false;
+  let progressStartTime = 0;
 
-  const { prevButton, nextButton, dotsContainer, playPauseButton, progressBar, hasAutoPlay } = options;
+  const { prevButton, nextButton, dotsContainer, playPauseButton, progressBar, hasAutoPlay, slideInterval, enableLoop } = options;
   let isPlaying = hasAutoPlay;
+  const autoPlayInterval = slideInterval || CAROUSEL_CONFIG.DEFAULT_AUTO_PLAY_INTERVAL;
 
   // Update carousel position
   function updateCarousel(slideIndex, animate = true) {
@@ -202,15 +218,18 @@ function initializeCarousel(block, track, slideCount, options) {
       });
     }
 
-    // Update arrow states
-    if (prevButton) prevButton.disabled = currentSlide === 0;
-    if (nextButton) nextButton.disabled = currentSlide === slideCount - 1;
+    // Update arrow states based on loop setting
+    if (prevButton) {
+      prevButton.disabled = !enableLoop && currentSlide === 0;
+    }
+    if (nextButton) {
+      nextButton.disabled = !enableLoop && currentSlide === slideCount - 1;
+    }
     
-    // Update progress bar
-    if (progressBar) {
-      const progressFill = progressBar.querySelector('.carousel-progress-fill');
-      const progress = ((currentSlide + 1) / slideCount) * 100;
-      progressFill.style.width = `${progress}%`;
+    // Reset progress bar for new slide
+    if (progressBar && isPlaying && hasAutoPlay) {
+      progressStartTime = Date.now();
+      updateProgressBar();
     }
   }
 
@@ -218,16 +237,36 @@ function initializeCarousel(block, track, slideCount, options) {
   function startAutoPlay() {
     if (!hasAutoPlay || slideCount <= 1) return;
     
+    progressStartTime = Date.now();
+    updateProgressBar();
+    
     autoPlayTimer = setInterval(() => {
-      const nextIndex = currentSlide < slideCount - 1 ? currentSlide + 1 : 0;
+      let nextIndex;
+      if (enableLoop) {
+        // Loop: go to first slide after last slide
+        nextIndex = currentSlide < slideCount - 1 ? currentSlide + 1 : 0;
+      } else {
+        // No loop: stop at last slide
+        nextIndex = currentSlide < slideCount - 1 ? currentSlide + 1 : currentSlide;
+        if (nextIndex === currentSlide) {
+          // Stop autoplay when reaching the end
+          stopAutoPlay();
+          return;
+        }
+      }
       updateCarousel(nextIndex);
-    }, CAROUSEL_CONFIG.AUTO_PLAY_INTERVAL);
+      progressStartTime = Date.now(); // Reset progress timer
+    }, autoPlayInterval);
   }
 
   function stopAutoPlay() {
     if (autoPlayTimer) {
       clearInterval(autoPlayTimer);
       autoPlayTimer = null;
+    }
+    if (progressTimer) {
+      clearInterval(progressTimer);
+      progressTimer = null;
     }
     isPlaying = false;
     updatePlayPauseButton();
@@ -240,6 +279,36 @@ function initializeCarousel(block, track, slideCount, options) {
         '<span class="carousel-pause-icon">⏸</span>' : 
         '<span class="carousel-play-icon">▶</span>';
     }
+  }
+
+  // Update progress bar to show actual autoscroll progress
+  function updateProgressBar() {
+    if (!progressBar || !isPlaying || !hasAutoPlay) return;
+    
+    // Clear any existing progress timer
+    if (progressTimer) {
+      clearInterval(progressTimer);
+    }
+    
+    // Reset progress bar
+    const progressFill = progressBar.querySelector('.carousel-progress-fill');
+    if (progressFill) {
+      progressFill.style.width = '0%';
+    }
+    
+    progressTimer = setInterval(() => {
+      const elapsed = Date.now() - progressStartTime;
+      const progress = Math.min((elapsed / autoPlayInterval) * 100, 100);
+      
+      if (progressFill && isPlaying) {
+        progressFill.style.width = `${progress}%`;
+      }
+      
+      if (progress >= 100 || !isPlaying) {
+        clearInterval(progressTimer);
+        progressTimer = null;
+      }
+    }, 50); // Update every 50ms for smooth animation
   }
 
   // Touch/swipe support
@@ -273,7 +342,13 @@ function initializeCarousel(block, track, slideCount, options) {
   if (prevButton) {
     prevButton.addEventListener('click', () => {
       stopAutoPlay();
-      updateCarousel(currentSlide - 1);
+      let prevIndex;
+      if (enableLoop) {
+        prevIndex = currentSlide > 0 ? currentSlide - 1 : slideCount - 1;
+      } else {
+        prevIndex = Math.max(0, currentSlide - 1);
+      }
+      updateCarousel(prevIndex);
       if (hasAutoPlay && isPlaying) {
         setTimeout(() => {
           startAutoPlay();
@@ -287,7 +362,13 @@ function initializeCarousel(block, track, slideCount, options) {
   if (nextButton) {
     nextButton.addEventListener('click', () => {
       stopAutoPlay();
-      updateCarousel(currentSlide + 1);
+      let nextIndex;
+      if (enableLoop) {
+        nextIndex = currentSlide < slideCount - 1 ? currentSlide + 1 : 0;
+      } else {
+        nextIndex = Math.min(slideCount - 1, currentSlide + 1);
+      }
+      updateCarousel(nextIndex);
       if (hasAutoPlay && isPlaying) {
         setTimeout(() => {
           startAutoPlay();
@@ -305,8 +386,8 @@ function initializeCarousel(block, track, slideCount, options) {
         stopAutoPlay();
       } else {
         isPlaying = true;
-        startAutoPlay();
         updatePlayPauseButton();
+        startAutoPlay();
       }
     });
   }
@@ -340,10 +421,11 @@ function initializeCarousel(block, track, slideCount, options) {
 
   // Keyboard navigation
   block.addEventListener('keydown', (e) => {
-    if (e.key === 'ArrowLeft' && currentSlide > 0) {
+    if (e.key === 'ArrowLeft' && (enableLoop || currentSlide > 0)) {
       e.preventDefault();
       stopAutoPlay();
-      updateCarousel(currentSlide - 1);
+      const prevIndex = enableLoop && currentSlide === 0 ? slideCount - 1 : currentSlide - 1;
+      updateCarousel(prevIndex);
       if (hasAutoPlay && isPlaying) {
         setTimeout(() => {
           startAutoPlay();
@@ -351,10 +433,11 @@ function initializeCarousel(block, track, slideCount, options) {
           updatePlayPauseButton();
         }, 3000);
       }
-    } else if (e.key === 'ArrowRight' && currentSlide < slideCount - 1) {
+    } else if (e.key === 'ArrowRight' && (enableLoop || currentSlide < slideCount - 1)) {
       e.preventDefault();
       stopAutoPlay();
-      updateCarousel(currentSlide + 1);
+      const nextIndex = enableLoop && currentSlide === slideCount - 1 ? 0 : currentSlide + 1;
+      updateCarousel(nextIndex);
       if (hasAutoPlay && isPlaying) {
         setTimeout(() => {
           startAutoPlay();
@@ -369,12 +452,11 @@ function initializeCarousel(block, track, slideCount, options) {
   updateCarousel(0, false);
   updatePlayPauseButton();
   
+  // Start autoplay immediately if enabled and multiple slides
   if (hasAutoPlay && slideCount > 1) {
     isPlaying = true;
-    setTimeout(() => {
-      startAutoPlay();
-      updatePlayPauseButton();
-    }, 2000); // Start auto-play after 2 seconds
+    startAutoPlay();
+    updatePlayPauseButton();
   }
 
   // Handle window resize
@@ -392,11 +474,15 @@ function initializeCarousel(block, track, slideCount, options) {
   const observer = new IntersectionObserver((entries) => {
     entries.forEach((entry) => {
       if (entry.isIntersecting) {
-        if (hasAutoPlay && slideCount > 1) {
+        if (hasAutoPlay && slideCount > 1 && !isPlaying) {
+          isPlaying = true;
           startAutoPlay();
+          updatePlayPauseButton();
         }
       } else {
-        stopAutoPlay();
+        if (isPlaying) {
+          stopAutoPlay();
+        }
       }
     });
   }, { threshold: 0.5 });

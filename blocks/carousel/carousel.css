@@ -114,8 +114,8 @@
   }
 
   .carousel-dots {
-    padding: 20px;
-    gap: 16px;
+    padding: 12px 14px;
+    gap: 10px;
     height: 48px;
   }
 }
@@ -235,6 +235,7 @@
   align-items: center;
   justify-content: center;
   transition: all 0.2s ease;
+  flex-shrink: 0;
 }
 
 .carousel-play-pause:hover {
@@ -254,11 +255,13 @@
 .carousel-dots {
   display: flex;
   align-items: center;
-  gap: 16px;
-  padding: 20px;
+  gap: 12px;
+  padding: 12px 16px;
   background-color: #CED4E0; /* Interaction/Primary Press Light */
   border-radius: 24px;
   height: 48px;
+  min-height: 48px;
+  box-sizing: border-box;
 }
 
 .carousel-progress-bar {
@@ -284,11 +287,15 @@
 .carousel-dot {
   width: 8px;
   height: 8px;
+  margin: 0;
+  padding: 0;
   border-radius: 50%;
+  opacity: 0.5;
   background-color: #0C2863; /* Brand/Fresenius Kabi Dark Blue */
   cursor: pointer;
   transition: all 0.2s ease;
   border: none;
+  flex-shrink: 0;
 }
 
 .carousel-dot:hover {
@@ -296,7 +303,9 @@
 }
 
 .carousel-dot.active {
+  opacity: 1;
   background-color: #0C2863;
+  transform: scale(1.1);
 }
 
 /* Variations */
@@ -351,7 +360,8 @@
 }
 
 .carousel.compact .carousel-dots {
-  padding: 12px;
+  padding: 8px 12px;
+  gap: 8px;
 }
 
 /* Tablet Styles */
