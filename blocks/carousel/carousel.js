@@ -3,7 +3,7 @@ import { moveInstrumentation } from '../../scripts/scripts.js';
 
 const CAROUSEL_CONFIG = {
   SLIDE_TRANSITION_DURATION: 300,
-  DEFAULT_AUTO_PLAY_INTERVAL: 6000,
+  AUTO_PLAY_INTERVAL: 6000,
   TOUCH_THRESHOLD: 50,
   BREAKPOINTS: {
     MOBILE: 600,
@@ -16,12 +16,10 @@ export default function decorate(block) {
   
   if (slides.length === 0) return;
 
-  // Check for variations - autoscroll is default behavior
-  const hasAutoPlay = !block.classList.contains('no-auto-play');
+  // Check for variations
+  const hasAutoPlay = block.classList.contains('auto-play');
   const showDots = !block.classList.contains('no-dots');
-  const showArrows = block.classList.contains('show-arrows');
-  const slideInterval = 6000; // Default 6 seconds
-  const enableLoop = !block.classList.contains('no-loop');
+  const showArrows = !block.classList.contains('no-arrows');
 
   // Create carousel container structure
   const carouselContainer = document.createElement('div');
@@ -162,9 +160,7 @@ export default function decorate(block) {
     dotsContainer,
     playPauseButton,
     progressBar,
-    hasAutoPlay,
-    slideInterval,
-    enableLoop
+    hasAutoPlay
   });
 }
 
@@ -177,9 +173,8 @@ function initializeCarousel(block, track, slideCount, options) {
   let isTransitioning = false;
   let progressStartTime = 0;
 
-  const { prevButton, nextButton, dotsContainer, playPauseButton, progressBar, hasAutoPlay, slideInterval, enableLoop } = options;
+  const { prevButton, nextButton, dotsContainer, playPauseButton, progressBar, hasAutoPlay } = options;
   let isPlaying = hasAutoPlay;
-  const autoPlayInterval = slideInterval || CAROUSEL_CONFIG.DEFAULT_AUTO_PLAY_INTERVAL;
 
   // Update carousel position
   function updateCarousel(slideIndex, animate = true) {
@@ -209,13 +204,9 @@ function initializeCarousel(block, track, slideCount, options) {
       });
     }
 
-    // Update arrow states based on loop setting
-    if (prevButton) {
-      prevButton.disabled = !enableLoop && currentSlide === 0;
-    }
-    if (nextButton) {
-      nextButton.disabled = !enableLoop && currentSlide === slideCount - 1;
-    }
+    // Update arrow states
+    if (prevButton) prevButton.disabled = currentSlide === 0;
+    if (nextButton) nextButton.disabled = currentSlide === slideCount - 1;
     
     // Reset progress bar for new slide
     if (progressBar && isPlaying && hasAutoPlay) {
@@ -232,22 +223,10 @@ function initializeCarousel(block, track, slideCount, options) {
     updateProgressBar();
     
     autoPlayTimer = setInterval(() => {
-      let nextIndex;
-      if (enableLoop) {
-        // Loop: go to first slide after last slide
-        nextIndex = currentSlide < slideCount - 1 ? currentSlide + 1 : 0;
-      } else {
-        // No loop: stop at last slide
-        nextIndex = currentSlide < slideCount - 1 ? currentSlide + 1 : currentSlide;
-        if (nextIndex === currentSlide) {
-          // Stop autoplay when reaching the end
-          stopAutoPlay();
-          return;
-        }
-      }
+      const nextIndex = currentSlide < slideCount - 1 ? currentSlide + 1 : 0;
       updateCarousel(nextIndex);
       progressStartTime = Date.now(); // Reset progress timer
-    }, autoPlayInterval);
+    }, CAROUSEL_CONFIG.AUTO_PLAY_INTERVAL);
   }
 
   function stopAutoPlay() {
@@ -289,7 +268,7 @@ function initializeCarousel(block, track, slideCount, options) {
     
     progressTimer = setInterval(() => {
       const elapsed = Date.now() - progressStartTime;
-      const progress = Math.min((elapsed / autoPlayInterval) * 100, 100);
+      const progress = Math.min((elapsed / CAROUSEL_CONFIG.AUTO_PLAY_INTERVAL) * 100, 100);
       
       if (progressFill && isPlaying) {
         progressFill.style.width = `${progress}%`;
@@ -333,13 +312,7 @@ function initializeCarousel(block, track, slideCount, options) {
   if (prevButton) {
     prevButton.addEventListener('click', () => {
       stopAutoPlay();
-      let prevIndex;
-      if (enableLoop) {
-        prevIndex = currentSlide > 0 ? currentSlide - 1 : slideCount - 1;
-      } else {
-        prevIndex = Math.max(0, currentSlide - 1);
-      }
-      updateCarousel(prevIndex);
+      updateCarousel(currentSlide - 1);
       if (hasAutoPlay && isPlaying) {
         setTimeout(() => {
           startAutoPlay();
@@ -353,13 +326,7 @@ function initializeCarousel(block, track, slideCount, options) {
   if (nextButton) {
     nextButton.addEventListener('click', () => {
       stopAutoPlay();
-      let nextIndex;
-      if (enableLoop) {
-        nextIndex = currentSlide < slideCount - 1 ? currentSlide + 1 : 0;
-      } else {
-        nextIndex = Math.min(slideCount - 1, currentSlide + 1);
-      }
-      updateCarousel(nextIndex);
+      updateCarousel(currentSlide + 1);
       if (hasAutoPlay && isPlaying) {
         setTimeout(() => {
           startAutoPlay();
@@ -412,11 +379,10 @@ function initializeCarousel(block, track, slideCount, options) {
 
   // Keyboard navigation
   block.addEventListener('keydown', (e) => {
-    if (e.key === 'ArrowLeft' && (enableLoop || currentSlide > 0)) {
+    if (e.key === 'ArrowLeft' && currentSlide > 0) {
       e.preventDefault();
       stopAutoPlay();
-      const prevIndex = enableLoop && currentSlide === 0 ? slideCount - 1 : currentSlide - 1;
-      updateCarousel(prevIndex);
+      updateCarousel(currentSlide - 1);
       if (hasAutoPlay && isPlaying) {
         setTimeout(() => {
           startAutoPlay();
@@ -424,11 +390,10 @@ function initializeCarousel(block, track, slideCount, options) {
           updatePlayPauseButton();
         }, 3000);
       }
-    } else if (e.key === 'ArrowRight' && (enableLoop || currentSlide < slideCount - 1)) {
+    } else if (e.key === 'ArrowRight' && currentSlide < slideCount - 1) {
       e.preventDefault();
       stopAutoPlay();
-      const nextIndex = enableLoop && currentSlide === slideCount - 1 ? 0 : currentSlide + 1;
-      updateCarousel(nextIndex);
+      updateCarousel(currentSlide + 1);
       if (hasAutoPlay && isPlaying) {
         setTimeout(() => {
           startAutoPlay();
@@ -443,11 +408,12 @@ function initializeCarousel(block, track, slideCount, options) {
   updateCarousel(0, false);
   updatePlayPauseButton();
   
-  // Start autoplay immediately if enabled and multiple slides
   if (hasAutoPlay && slideCount > 1) {
     isPlaying = true;
-    startAutoPlay();
-    updatePlayPauseButton();
+    setTimeout(() => {
+      startAutoPlay();
+      updatePlayPauseButton();
+    }, 2000); // Start auto-play after 2 seconds
   }
 
   // Handle window resize
