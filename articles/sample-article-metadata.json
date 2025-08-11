@@ -1,0 +1,16 @@
+{
+  "title": "Sample Article for Query Indexing",
+  "description": "A demonstration article showing how query indexing works in Edge Delivery Services",
+  "og:title": "Sample Article for Query Indexing - EDS Demo",
+  "og:description": "Learn how query indexing improves content searchability in Edge Delivery Services",
+  "og:image": "/icons/logo-fresubin.png",
+  "og:image:alt": "EDS Demo Logo",
+  "template": "article",
+  "category": "Tutorial",
+  "topics": "Edge Delivery Services, Query Indexing, Search",
+  "tags": "EDS, indexing, search, tutorial",
+  "authors": "EDS Demo Team",
+  "publishdate": "2025-01-17",
+  "readingtime": "3 min",
+  "robots": "index, follow"
+}
