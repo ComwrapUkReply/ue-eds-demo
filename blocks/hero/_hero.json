@@ -34,7 +34,7 @@
           "valueType": "string"
         },
         {
-          "component": "button",
+          "component": "group",
           "valueType": "object",
           "name": "button",
           "label": "Button",
@@ -70,5 +70,12 @@
       ]
     }
   ],
-  "filters": []
+  "filters": [
+    {
+      "id": "hero",
+      "components": [
+        "hero"
+      ]
+    }
+  ]
 }
