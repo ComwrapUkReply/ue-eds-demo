@@ -300,12 +300,6 @@
         "valueType": "string"
       },
       {
-        "component": "button",
-        "name": "button",
-        "label": "Button",
-        "value": ""
-      },
-      {
         "component": "reference",
         "valueType": "string",
         "name": "image",
