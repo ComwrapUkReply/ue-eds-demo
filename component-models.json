@@ -299,25 +299,24 @@
         "valueType": "string"
       },
       {
-        "component": "group",
+        "component": "button-link"  ,
         "valueType": "object",
         "name": "button",
-        "label": "Button",
-        "fields": [
-            {
-            "component": "text",
-            "valueType": "string",
-            "name": "label",
-            "label": "Label"
-            },
-            {
-              "component": "text",
-              "valueType": "string",
-              "name": "link",
-              "label": "Link"
-            }
-          ]
-        },
+        "label": "Button"
+      },
+      {
+        "component": "button-label",
+        "valueType": "string",
+        "name": "buttonLabel",
+        "label": "Button Label"
+      },
+      {
+        "component": "reference",
+        "valueType": "string",
+        "name": "image",
+        "label": "Image",
+        "multi": false
+      },
       {
         "component": "reference",
         "valueType": "string",
