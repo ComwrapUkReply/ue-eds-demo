@@ -21,31 +21,6 @@
       "id": "hero",
       "fields": [
         {
-          "component": "text",
-          "valueType": "string",
-          "name": "title",
-          "label": "Title"
-        },
-        { 
-          "component": "richtext",
-          "name": "text",
-          "value": "",
-          "label": "Text",
-          "valueType": "string"
-        },
-        {
-          "component": "button-link",
-          "valueType": "object",
-          "name": "button",
-          "label": "Button"
-        },
-        {
-          "component": "button-label",
-          "valueType": "string",
-          "name": "buttonLabel",
-          "label": "Button Label"
-        },
-        {
           "component": "reference",
           "valueType": "string",
           "name": "image",
@@ -58,16 +33,16 @@
           "name": "imageAlt",
           "label": "Alt",
           "value": ""
+        },
+        {
+          "component": "richtext",
+          "name": "text",
+          "value": "",
+          "label": "Text",
+          "valueType": "string"
         }
       ]
     }
   ],
-  "filters": [
-    {
-      "id": "hero",
-      "components": [
-        "hero"
-      ]
-    }
-  ]
+  "filters": []
 }
