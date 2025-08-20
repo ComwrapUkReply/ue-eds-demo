@@ -299,6 +299,26 @@
         "valueType": "string"
       },
       {
+        "component": "button",
+        "valueType": "object",
+        "name": "button",
+        "label": "Button",
+        "fields": [
+            {
+            "component": "text",
+            "valueType": "string",
+            "name": "label",
+            "label": "Label"
+            },
+            {
+              "component": "text",
+              "valueType": "string",
+              "name": "link",
+              "label": "Link"
+            }
+          ]
+        },
+      {
         "component": "reference",
         "valueType": "string",
         "name": "image",
