@@ -344,9 +344,9 @@
        },
        {
         "component": "select",
-        "name": "style",
-        "label": "Background Style",
+        "name": "classes",
         "value": "",
+        "label": "Background Style",
         "description": "The background style of the quote",
         "valueType": "string",
         "options": [
