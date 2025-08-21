@@ -341,6 +341,32 @@
          "name": "author",
          "label": "Author",
          "value": "string"
+       },
+       {
+        "component": "select",
+        "name": "classes",
+        "value": "",
+        "label": "Background Style",
+        "description": "The background style of the quote",
+        "valueType": "string",
+        "options": [
+          {
+            "name": "Default",
+            "value": "default"
+          },
+          {
+            "name": "Highlight",
+            "value": "highlight"
+          },
+          {
+            "name": "Dark",
+            "value": "dark"
+          },
+          {
+            "name": "Light",
+            "value": "light"
+          }
+        ]
        }
      ]
   },
