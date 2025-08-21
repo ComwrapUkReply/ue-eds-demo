@@ -1,15 +1,4 @@
 /**
- * Block options are applied as classes to the block's DOM element
- * alongside the `block` and `quote` classes.
- *
- * @param {HTMLElement} block represents the block's DOM element/tree
- */
-function getOptions(block) {
-  // Get the block's classes, excluding 'block' and 'quote'.
-  return [...block.classList].filter((c) => !['block', 'quote'].includes(c));
-}
-
-/**
  * Entry point to the block's JavaScript.
  * Must be exported as default and accept a block's DOM element.
  * This function is called by the project's scripts.js, passing the block's element.
@@ -50,22 +39,6 @@ export default function decorate(block) {
     quoteWrapper.appendChild(authorContainer);
   }
 
-  // Handle block options - the classes are automatically applied by AEM
-  // No additional JavaScript logic needed for styling, but we can add conditional logic here if needed
-  const options = getOptions(block);
-  
-  // Example: Add conditional logic based on block options
-  if (options.includes('dark')) {
-    // Additional dark theme specific JavaScript logic can be added here
-    console.log('Dark theme quote block initialized');
-  } else if (options.includes('highlight')) {
-    // Additional highlight theme specific JavaScript logic can be added here
-    console.log('Highlight theme quote block initialized');
-  } else if (options.includes('light')) {
-    // Additional light theme specific JavaScript logic can be added here
-    console.log('Light theme quote block initialized');
-  } else {
-    // Default theme
-    console.log('Default theme quote block initialized');
-  }
+  // Block options are handled automatically by EDS through CSS classes
+  // No JavaScript needed for background style management
 }
