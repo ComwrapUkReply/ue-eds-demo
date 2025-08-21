@@ -46,5 +46,11 @@
     "components": [
       "carousel-slide"
     ]
+  },
+  {
+    "id": "search",
+    "components": [
+      "search"
+    ]
   }
 ]
