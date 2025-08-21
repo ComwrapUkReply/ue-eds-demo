@@ -51,12 +51,12 @@
         {
           "component": "aem-content",
           "name": "link",
-          "label": "Link"
+          "label": "Button Link"
         },
         {
           "component": "text",
           "name": "linkText",
-          "label": "Text"
+          "label": "Button Text"
         }
       ]
     }
