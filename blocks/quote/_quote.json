@@ -38,26 +38,31 @@
         },
         {
           "component": "select",
-          "name": "style",
+          "name": "classes",
           "value": "",
-          "label": "Style",
+          "label": "Background Styles",
+          "description": "The background styles of the quote",
           "valueType": "string",
           "options": [
             {
               "name": "Default",
-              "value": "default"
+              "value": "default",
+              "description": "The default background style"
             },
             {
               "name": "Highlight",
-              "value": "highlight"
+              "value": "highlight",
+              "description": "The highlight background style"
             },
             {
               "name": "Dark",
-              "value": "dark"
+              "value": "dark",
+              "description": "The dark background style"
             },
             {
               "name": "Light",
-              "value": "light"
+              "value": "light",
+              "description": "The light background style"
             }
           ]
         }
