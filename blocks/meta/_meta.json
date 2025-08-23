@@ -22,10 +22,16 @@
       "fields": [
         {
           "component": "aem-content",
-          "name": "link",
+          "name": "link_ctaLink",
           "label": "Link",
           "value": "",
           "multi": true
+        },
+        {
+          "component": "text",
+          "name": "link_ctaText",
+          "label": "Link Title",
+          "value": "string"
         }
       ]
     }
