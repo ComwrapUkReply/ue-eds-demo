@@ -1,4 +1,14 @@
 import { createOptimizedPicture } from '../../scripts/aem.js';
+/**
+ * The moveInstrumentation function is used to transfer data attributes and tracking information
+ * from the original block element to the newly created elements during block decoration.
+ * This ensures that analytics, testing, and other instrumentation data is preserved
+ * when the DOM structure is modified during the decoration process.
+ * 
+ * It's commonly used in Adobe Edge Delivery Services (Franklin) blocks to maintain
+ * tracking capabilities after DOM manipulation.
+ */
+
 import { moveInstrumentation } from '../../scripts/scripts.js';
 
 /**

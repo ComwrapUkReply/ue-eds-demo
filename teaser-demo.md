@@ -1,15 +1,15 @@
 # Teaser Component Demo
 
-This page demonstrates the new teaser component with various configurations and layouts.
+This page demonstrates the new teaser component styled to match the Figma design.
 
-## Default Teaser
+## Figma Design Match
 
 | Teaser |
 |---|
-| ![Sample Image](./icons/logo-fresubin.png) |
-| ## Discover Our Platform |
-| Experience the power of modern web development with our cutting-edge Edge Delivery Services. Build faster, perform better, and deliver exceptional user experiences. |
-| [Get Started](https://www.adobe.com/products/experience-manager.html) |
+| ![Medical Professional](./icons/logo-fresubin.png) |
+| ## Confidence in Brand. Consistency in Supply. |
+| Epinephrine from Fresenius Kabi means a new source of this FDA Essential Medicine in your preferred packaging — including AP-rated, three-indication 1 mg per 1 mL Epinephrine Injection, USP, in a single-dose vial — competitively priced and formulated, filled, and packaged in the U.S.A. |
+| [Learn More](https://www.fresenius-kabi.com) |
 
 ## Horizontal Layout
 
