@@ -21,24 +21,18 @@
       "id": "meta-links",
       "fields": [
         {
-          "component": "container",
-          "name": "links",
-          "label": "Links",
+          "component": "aem-content",
+          "name": "metaContent_links",
+          "label": "Meta Links",
           "multi": true,
-          "fields": [
-            {
-              "component": "aem-content",
-              "name": "metaContent_links",
-              "label": "Meta Links",
-              "valueType": "string"
-            },
-            {
-              "component": "text",
-              "name": "metaContent_linksText",
-              "label": "Meta Links Text",
-              "valueType": "string"
-            }
-          ]
+          "valueType": "string"
+        },
+        {
+          "component": "text",
+          "name": "metaContent_linksText",
+          "label": "Meta Links Text",
+          "multi": true,
+          "valueType": "string"
         }
       ]
     }
