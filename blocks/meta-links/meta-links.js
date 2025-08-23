@@ -34,11 +34,10 @@ export default function decorate(block) {
 
     let linkUrl = '';
     let linkText = '';
-    let linkTitle = '';
 
     // Extract data from the row cells
     // The Universal Editor generates everything in a single cell with this structure:
-    // <div><p class="button-container"><a href="#" title="..." class="button">Link Text</a></p></div>
+    // <div><p class="button-container"><a href="#" class="button">Link Text</a></p></div>
     
     if (cells.length >= 1) {
       const firstCell = cells[0];
@@ -53,16 +52,12 @@ export default function decorate(block) {
         // Extract text from link content
         linkText = linkElement.textContent.trim();
         console.log(`Found link text:`, linkText);
-        
-        // Extract title from title attribute
-        linkTitle = linkElement.title || '';
-        console.log(`Found link title:`, linkTitle);
       } else {
         console.log(`No link element found in cell`);
       }
     }
 
-    console.log(`Extracted data - URL: "${linkUrl}", Text: "${linkText}", Title: "${linkTitle}"`);
+    console.log(`Extracted data - URL: "${linkUrl}", Text: "${linkText}"`);
 
     // Create the link element if we have URL and text
     if (linkUrl && linkText) {
@@ -74,21 +69,11 @@ export default function decorate(block) {
       linkElement.textContent = linkText;
       linkElement.className = 'meta-links-link';
 
-      // Add title attribute if provided
-      if (linkTitle) {
-        linkElement.title = linkTitle;
-        linkElement.setAttribute('aria-label', `${linkText}: ${linkTitle}`);
-      }
-
       // Add external link indicator if needed
       if (linkUrl.startsWith('http') && !linkUrl.includes(window.location.hostname)) {
         linkElement.target = '_blank';
         linkElement.rel = 'noopener noreferrer';
-        if (!linkTitle) {
-          linkElement.setAttribute('aria-label', `${linkText} (opens in new tab)`);
-        } else {
-          linkElement.setAttribute('aria-label', `${linkText}: ${linkTitle} (opens in new tab)`);
-        }
+        linkElement.setAttribute('aria-label', `${linkText} (opens in new tab)`);
       }
 
       linkWrapper.appendChild(linkElement);
@@ -99,7 +84,7 @@ export default function decorate(block) {
       console.log(`Skipping row ${index} - missing URL or text`);
       // Add debug info to the list item
       const debugInfo = document.createElement('div');
-      debugInfo.textContent = `Debug: URL="${linkUrl}", Text="${linkText}", Title="${linkTitle}"`;
+      debugInfo.textContent = `Debug: URL="${linkUrl}", Text="${linkText}"`;
       debugInfo.style.color = 'red';
       debugInfo.style.fontSize = '12px';
       listItem.appendChild(debugInfo);

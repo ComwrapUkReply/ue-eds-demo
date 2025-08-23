@@ -213,8 +213,7 @@
                   "name": "Meta Link",
                   "model": "meta-link",
                   "link": "/",
-                  "linkText": "Sample Link",
-                  "linkTitle": "This is a sample link description"
+                  "linkText": "Sample Link"
                 }
               }
             }

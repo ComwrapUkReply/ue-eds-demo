@@ -258,13 +258,6 @@
         "valueType": "string",
         "required": true,
         "value": "Sample Link"
-      },
-      {
-        "component": "text",
-        "name": "linkTitle",
-        "label": "Link Description",
-        "valueType": "string",
-        "value": "Link description"
       }
     ]
   },

@@ -26,8 +26,7 @@
               "name": "Meta Link",
               "model": "meta-link",
               "link": "/",
-              "linkText": "Sample Link",
-              "linkTitle": "This is a sample link description"
+              "linkText": "Sample Link"
             }
           }
         }
@@ -52,13 +51,6 @@
           "valueType": "string",
           "required": true,
           "value": "Sample Link"
-        },
-        {
-          "component": "text",
-          "name": "linkTitle",
-          "label": "Link Description",
-          "valueType": "string",
-          "value": "Link description"
         }
       ]
     }
