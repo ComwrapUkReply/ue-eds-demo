@@ -25,7 +25,13 @@ const TEASER_CONFIG = {
  * @param {HTMLElement} block - The teaser block element
  */
 export default function decorate(block) {
+  // eslint-disable-next-line no-console
+  console.log('Teaser block decorate function called', block);
+  
   const rows = [...block.children];
+  
+  // eslint-disable-next-line no-console
+  console.log('Teaser block rows:', rows.length, rows);
   
   if (rows.length === 0) {
     // eslint-disable-next-line no-console
@@ -46,17 +52,34 @@ export default function decorate(block) {
   let linkElement = null;
 
   // Process all rows to extract content
-  rows.forEach((row) => {
+  rows.forEach((row, rowIndex) => {
+    // eslint-disable-next-line no-console
+    console.log(`Processing row ${rowIndex}:`, row);
+    
     const cells = [...row.children];
     
-    cells.forEach((cell) => {
+    cells.forEach((cell, cellIndex) => {
+      // eslint-disable-next-line no-console
+      console.log(`Processing cell ${cellIndex}:`, cell);
+      
       const elements = [...cell.children];
       
-      elements.forEach((element) => {
+      // If no child elements, check if the cell itself has content
+      if (elements.length === 0 && cell.textContent.trim()) {
+        // eslint-disable-next-line no-console
+        console.log('Cell has direct text content:', cell.textContent.trim());
+      }
+      
+      elements.forEach((element, elementIndex) => {
+        // eslint-disable-next-line no-console
+        console.log(`Processing element ${elementIndex}:`, element.tagName, element.textContent?.trim());
+        
         // Check for image
         const img = element.querySelector('img');
         if (img && !imageElement) {
           imageElement = img;
+          // eslint-disable-next-line no-console
+          console.log('Found image:', img.src);
           return;
         }
 
@@ -64,6 +87,8 @@ export default function decorate(block) {
         if ((element.tagName === 'H1' || element.tagName === 'H2' || 
              element.tagName === 'H3' || element.tagName === 'H4') && !titleElement) {
           titleElement = element.cloneNode(true);
+          // eslint-disable-next-line no-console
+          console.log('Found title:', titleElement.textContent);
           return;
         }
 
@@ -71,12 +96,16 @@ export default function decorate(block) {
         const link = element.querySelector('a');
         if (link && !linkElement) {
           linkElement = link.cloneNode(true);
+          // eslint-disable-next-line no-console
+          console.log('Found link:', linkElement.href, linkElement.textContent);
           return;
         }
 
         // Check for paragraph text (description)
         if (element.tagName === 'P' && !element.querySelector('a') && !descriptionElement) {
           descriptionElement = element.cloneNode(true);
+          // eslint-disable-next-line no-console
+          console.log('Found description:', descriptionElement.textContent);
           return;
         }
       });
@@ -159,4 +188,9 @@ export default function decorate(block) {
   if (rows.length > 0) {
     moveInstrumentation(rows[0], block);
   }
+  
+  // eslint-disable-next-line no-console
+  console.log('Teaser block decoration completed. Final block:', block);
+  // eslint-disable-next-line no-console
+  console.log('Elements found - Image:', !!imageElement, 'Title:', !!titleElement, 'Description:', !!descriptionElement, 'Link:', !!linkElement);
 }
