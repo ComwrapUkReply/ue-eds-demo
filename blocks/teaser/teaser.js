@@ -1,48 +1,17 @@
 import { createOptimizedPicture } from '../../scripts/aem.js';
-/**
- * The moveInstrumentation function is used to transfer data attributes and tracking information
- * from the original block element to the newly created elements during block decoration.
- * This ensures that analytics, testing, and other instrumentation data is preserved
- * when the DOM structure is modified during the decoration process.
- * 
- * It's commonly used in Adobe Edge Delivery Services (Franklin) blocks to maintain
- * tracking capabilities after DOM manipulation.
- */
-
 import { moveInstrumentation } from '../../scripts/scripts.js';
 
-/**
- * Teaser Component Configuration
- * A flexible teaser component that displays image, title, description, and optional CTA
- */
 const TEASER_CONFIG = {
   IMAGE_WIDTHS: [{ width: '400' }, { width: '600' }, { width: '800' }],
-  DEFAULT_IMAGE_WIDTH: '600'
 };
 
-/**
- * Creates a teaser card element with image, content, and optional link
- * @param {HTMLElement} block - The teaser block element
- */
 export default function decorate(block) {
-  // eslint-disable-next-line no-console
-  console.log('Teaser block decorate function called', block);
-  
   const rows = [...block.children];
-  
-  // eslint-disable-next-line no-console
-  console.log('Teaser block rows:', rows.length, rows);
-  
-  if (rows.length === 0) {
-    // eslint-disable-next-line no-console
-    console.warn('Teaser block requires at least one row with content');
-    return;
-  }
 
-  // Clear the block content
+  if (rows.length === 0) return;
+
   block.textContent = '';
 
-  // Create the teaser wrapper
   const teaserWrapper = document.createElement('div');
   teaserWrapper.className = 'teaser-wrapper';
 
@@ -51,189 +20,120 @@ export default function decorate(block) {
   let descriptionElement = null;
   let linkElement = null;
 
-  // Process all rows to extract content
-  rows.forEach((row, rowIndex) => {
-    // eslint-disable-next-line no-console
-    console.log(`Processing row ${rowIndex}:`, row);
-    
+  // Extract content from rows
+  rows.forEach((row) => {
     const cells = [...row.children];
-    
-    // Check if this row contains linkText data
-    const linkTextElement = row.querySelector('[data-aue-prop="linkText"]');
-    if (linkTextElement) {
-      // eslint-disable-next-line no-console
-      console.log('Found linkText element:', linkTextElement, 'content:', linkTextElement.textContent);
-    }
-    
-    cells.forEach((cell, cellIndex) => {
-      // eslint-disable-next-line no-console
-      console.log(`Processing cell ${cellIndex}:`, cell);
-      
+
+    cells.forEach((cell) => {
       const elements = [...cell.children];
-      
-      // If no child elements, check if the cell itself has content
+
+      // Handle cell with direct text content
       if (elements.length === 0 && cell.textContent.trim()) {
         const textContent = cell.textContent.trim();
-        // eslint-disable-next-line no-console
-        console.log('Cell has direct text content:', textContent);
-        
-        // Try to determine what type of content this is
-        if (!titleElement && textContent.length > 0) {
-          const h2 = document.createElement('h2');
-          h2.textContent = textContent;
-          titleElement = h2;
-          // eslint-disable-next-line no-console
-          console.log('Found title in cell text:', titleElement.textContent);
-        } else if (!descriptionElement && textContent.length > 0 && titleElement) {
-          const p = document.createElement('p');
-          p.textContent = textContent;
-          descriptionElement = p;
-          // eslint-disable-next-line no-console
-          console.log('Found description in cell text:', descriptionElement.textContent);
+        if (!titleElement) {
+          titleElement = document.createElement('h2');
+          titleElement.textContent = textContent;
+        } else if (!descriptionElement) {
+          descriptionElement = document.createElement('p');
+          descriptionElement.textContent = textContent;
         }
+        return;
       }
-      
-      elements.forEach((element, elementIndex) => {
-        // eslint-disable-next-line no-console
-        console.log(`Processing element ${elementIndex}:`, element.tagName, element.textContent?.trim());
-        
-        // Check for image (in picture or img tags)
+
+      // Process child elements
+      elements.forEach((element) => {
+        // Find images
         const img = element.querySelector('img') || (element.tagName === 'IMG' ? element : null);
         const picture = element.querySelector('picture') || (element.tagName === 'PICTURE' ? element : null);
-        
+
         if ((img || picture) && !imageElement) {
           imageElement = img || picture.querySelector('img');
-          // eslint-disable-next-line no-console
-          console.log('Found image:', imageElement?.src);
           return;
         }
 
-        // Check for headings (title)
-        if ((element.tagName === 'H1' || element.tagName === 'H2' || 
-             element.tagName === 'H3' || element.tagName === 'H4') && !titleElement) {
+        // Find headings
+        if (['H1', 'H2', 'H3', 'H4'].includes(element.tagName) && !titleElement) {
           titleElement = element.cloneNode(true);
-          // eslint-disable-next-line no-console
-          console.log('Found title:', titleElement.textContent);
           return;
         }
-        
-        // Check for DIV with title-like content (Universal Editor structure)
+
+        // Find title in DIV elements (Universal Editor)
         if (element.tagName === 'DIV' && !titleElement) {
           const textContent = element.textContent?.trim();
-          // eslint-disable-next-line no-console
-          console.log('DIV element textContent:', `"${textContent}"`, 'length:', textContent?.length);
-          
-          if (textContent && textContent.length > 0) {
-            // More lenient check for title content
-            if (textContent.length <= 200 && !textContent.includes('\n\n')) {
-              const h2 = document.createElement('h2');
-              h2.textContent = textContent;
-              titleElement = h2;
-              // eslint-disable-next-line no-console
-              console.log('Found title in DIV:', titleElement.textContent);
-              return;
-            }
+          if (textContent && textContent.length <= 200) {
+            titleElement = document.createElement('h2');
+            titleElement.textContent = textContent;
+            return;
           }
         }
 
-        // Check for links (CTA button)
+        // Find links
         const link = element.querySelector('a');
         if (link && !linkElement) {
           linkElement = link.cloneNode(true);
-          
-          // Check if this is a Universal Editor link with data-aue-prop="linkText"
+
+          // Handle Universal Editor linkText
           if (link.hasAttribute('data-aue-prop') && link.getAttribute('data-aue-prop') === 'linkText') {
-            // For Universal Editor, the linkText should be separate from the link URL
-            // Use the default value from the component model if no proper text is found
-            let linkText = 'Learn More'; // Default from component model
-            
-            // Check if there's actual link text that's not a path
             const currentText = link.textContent?.trim();
-            if (currentText && !currentText.startsWith('/content/') && !currentText.startsWith('http')) {
-              linkText = currentText;
-            }
-            
+            const linkText = (currentText && !currentText.startsWith('/content/') && !currentText.startsWith('http'))
+              ? currentText : 'Learn More';
             linkElement.textContent = linkText;
-            // eslint-disable-next-line no-console
-            console.log('Found Universal Editor link, using linkText:', linkText);
           }
-          
-          // eslint-disable-next-line no-console
-          console.log('Found link:', linkElement.href, linkElement.textContent);
           return;
         }
 
-        // Check for paragraph text (description)
+        // Find paragraphs
         if (element.tagName === 'P' && !element.querySelector('a') && !descriptionElement) {
           descriptionElement = element.cloneNode(true);
-          // eslint-disable-next-line no-console
-          console.log('Found description:', descriptionElement.textContent);
           return;
         }
-        
-        // Check for DIV with description-like content (Universal Editor structure)
+
+        // Find description in DIV elements (Universal Editor)
         if (element.tagName === 'DIV' && !descriptionElement) {
           const textContent = element.textContent?.trim();
-          // eslint-disable-next-line no-console
-          console.log('DIV element for description check:', `"${textContent}"`, 'length:', textContent?.length, 'hasTitle:', !!titleElement);
-          
-          if (textContent && textContent.length > 0) {
-            // If we already have a title, this could be description
-            // Or if it's longer content, treat as description
-            if (titleElement || textContent.length > 50) {
-              const p = document.createElement('p');
-              p.textContent = textContent;
-              descriptionElement = p;
-              // eslint-disable-next-line no-console
-              console.log('Found description in DIV:', descriptionElement.textContent);
-              return;
-            }
+          if (textContent && (titleElement || textContent.length > 50)) {
+            descriptionElement = document.createElement('p');
+            descriptionElement.textContent = textContent;
           }
         }
       });
     });
   });
 
-  // Create image container
+  // Build image container
   if (imageElement) {
     const imageContainer = document.createElement('div');
     imageContainer.className = 'teaser-image';
-    
+
     const optimizedPicture = createOptimizedPicture(
       imageElement.src,
       imageElement.alt || 'Teaser image',
       false,
-      TEASER_CONFIG.IMAGE_WIDTHS
+      TEASER_CONFIG.IMAGE_WIDTHS,
     );
-    
-    // Move instrumentation if present
+
     moveInstrumentation(imageElement, optimizedPicture.querySelector('img'));
-    
     imageContainer.appendChild(optimizedPicture);
     teaserWrapper.appendChild(imageContainer);
   }
 
-  // Create content container
+  // Build content container
   const contentContainer = document.createElement('div');
   contentContainer.className = 'teaser-content';
 
-  // Add title
   if (titleElement) {
     titleElement.className = 'teaser-title';
     contentContainer.appendChild(titleElement);
   }
 
-  // Add description
   if (descriptionElement) {
     descriptionElement.className = 'teaser-description';
     contentContainer.appendChild(descriptionElement);
   }
 
-  // Add CTA button
   if (linkElement) {
     const buttonContainer = document.createElement('div');
     buttonContainer.className = 'teaser-button-container';
-    
     linkElement.className = 'teaser-button';
     buttonContainer.appendChild(linkElement);
     contentContainer.appendChild(buttonContainer);
@@ -241,20 +141,17 @@ export default function decorate(block) {
 
   teaserWrapper.appendChild(contentContainer);
 
-  // If there's a link, make the entire teaser clickable (but keep button as primary CTA)
-  if (linkElement && linkElement.href) {
+  // Make entire teaser clickable if link exists
+  if (linkElement?.href) {
     teaserWrapper.addEventListener('click', (e) => {
-      // Don't trigger if clicking on the button itself
-      if (e.target.closest('.teaser-button')) {
-        return;
+      if (!e.target.closest('.teaser-button')) {
+        window.open(linkElement.href, linkElement.target || '_self');
       }
-      window.open(linkElement.href, linkElement.target || '_self');
     });
     teaserWrapper.style.cursor = 'pointer';
     teaserWrapper.setAttribute('role', 'button');
     teaserWrapper.setAttribute('tabindex', '0');
-    
-    // Add keyboard support
+
     teaserWrapper.addEventListener('keydown', (e) => {
       if (e.key === 'Enter' || e.key === ' ') {
         e.preventDefault();
@@ -263,16 +160,9 @@ export default function decorate(block) {
     });
   }
 
-  // Add the wrapper to the block
   block.appendChild(teaserWrapper);
 
-  // Move any existing instrumentation
   if (rows.length > 0) {
     moveInstrumentation(rows[0], block);
   }
-  
-  // eslint-disable-next-line no-console
-  console.log('Teaser block decoration completed. Final block:', block);
-  // eslint-disable-next-line no-console
-  console.log('Elements found - Image:', !!imageElement, 'Title:', !!titleElement, 'Description:', !!descriptionElement, 'Link:', !!linkElement);
 }
