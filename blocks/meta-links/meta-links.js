@@ -37,33 +37,29 @@ export default function decorate(block) {
     let linkTitle = '';
 
     // Extract data from the row cells
-    // First cell: Link URL (as <a> element)
+    // The Universal Editor generates everything in a single cell with this structure:
+    // <div><p class="button-container"><a href="#" title="..." class="button">Link Text</a></p></div>
+    
     if (cells.length >= 1) {
       const firstCell = cells[0];
       console.log(`First cell:`, firstCell, firstCell.innerHTML);
+      
       const linkElement = firstCell.querySelector('a');
       if (linkElement) {
+        // Extract URL from href attribute
         linkUrl = linkElement.href;
         console.log(`Found link URL:`, linkUrl);
+        
+        // Extract text from link content
+        linkText = linkElement.textContent.trim();
+        console.log(`Found link text:`, linkText);
+        
+        // Extract title from title attribute
+        linkTitle = linkElement.title || '';
+        console.log(`Found link title:`, linkTitle);
       } else {
-        // Try getting URL from text content
-        linkUrl = firstCell.textContent.trim();
-        console.log(`Link URL from text:`, linkUrl);
+        console.log(`No link element found in cell`);
       }
-    }
-
-    // Second cell: Link Text
-    if (cells.length >= 2) {
-      const secondCell = cells[1];
-      linkText = secondCell.textContent.trim();
-      console.log(`Link text:`, linkText);
-    }
-
-    // Third cell: Link Title/Description
-    if (cells.length >= 3) {
-      const thirdCell = cells[2];
-      linkTitle = thirdCell.textContent.trim();
-      console.log(`Link title:`, linkTitle);
     }
 
     console.log(`Extracted data - URL: "${linkUrl}", Text: "${linkText}", Title: "${linkTitle}"`);
