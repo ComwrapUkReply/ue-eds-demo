@@ -246,16 +246,15 @@
     "fields": [
       {
         "component": "aem-content",
-        "name": "link_ctaLink",
-        "label": "Link",
-        "value": "",
-        "multi": true
+        "name": "textContent_cta",
+        "label": "CTA",
+        "valueType": "string"
       },
       {
         "component": "text",
-        "name": "link_ctaText",
-        "label": "Link Title",
-        "value": "string"
+        "name": "textContent_ctaText",
+        "label": "CTA label",
+        "valueType": "string"
       }
     ]
   },
