@@ -21,18 +21,33 @@
       "id": "meta-links",
       "fields": [
         {
-          "component": "aem-content",
-          "name": "metaContent_links",
-          "label": "Meta Links",
+          "component": "container",
+          "name": "links",
+          "label": "Links",
           "multi": true,
-          "valueType": "string"
-        },
-        {
-          "component": "text",
-          "name": "metaContent_linksText",
-          "label": "Meta Links Text",
-          "multi": true,
-          "valueType": "string"
+          "fields": [
+            {
+              "component": "aem-content",
+              "name": "link",
+              "label": "Meta Links",
+              "multi": false,
+              "valueType": "string"
+            },
+            {
+              "component": "text",
+              "name": "linkText",
+              "label": "Meta Links Text",
+              "multi": false,
+              "valueType": "string"
+            },
+            {
+              "component": "text",
+              "name": "linkTitle",
+              "label": "Meta Links Title",
+              "multi": false,
+              "valueType": "string"
+            }
+          ]
         }
       ]
     }
