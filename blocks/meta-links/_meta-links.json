@@ -42,20 +42,23 @@
           "component": "aem-content",
           "name": "link",
           "label": "Link URL",
-          "valueType": "string"
+          "valueType": "string",
+          "value": "/"
         },
         {
           "component": "text",
           "name": "linkText",
           "label": "Link Text",
           "valueType": "string",
-          "required": true
+          "required": true,
+          "value": "Sample Link"
         },
         {
           "component": "text",
           "name": "linkTitle",
           "label": "Link Description",
-          "valueType": "string"
+          "valueType": "string",
+          "value": "Link description"
         }
       ]
     }
