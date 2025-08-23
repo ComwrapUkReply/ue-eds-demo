@@ -245,24 +245,16 @@
     "id": "meta",
     "fields": [
       {
-        "component": "container",
-        "name": "links",
-        "label": "Links",
-        "multi": false,
-        "fields": [
-          {
-            "component": "aem-content",
-            "name": "textContent_cta",
-            "label": "CTA",
-            "valueType": "string"
-          },
-          {
-            "component": "text",
-            "name": "textContent_ctaText",
-            "label": "CTA label",
-            "valueType": "string"
-          }
-        ]
+        "component": "aem-content",
+        "name": "textContent_cta",
+        "label": "CTA",
+        "valueType": "string"
+      },
+      {
+        "component": "text",
+        "name": "textContent_ctaText",
+        "label": "CTA label",
+        "valueType": "string"
       }
     ]
   },
