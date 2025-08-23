@@ -21,7 +21,7 @@
       "id": "meta",
       "fields": [
         {
-          "component": "reference",
+          "component": "aem-content",
           "name": "link",
           "label": "Link",
           "value": "",
