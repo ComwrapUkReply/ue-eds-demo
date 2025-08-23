@@ -242,7 +242,7 @@
     ]
   },
   {
-    "id": "meta-links",
+    "id": "meta-link",
     "fields": [
       {
         "component": "aem-content",

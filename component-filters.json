@@ -45,5 +45,11 @@
       "button",
       "title"
     ]
+  },
+  {
+    "id": "meta-links",
+    "components": [
+      "meta-link"
+    ]
   }
 ]
