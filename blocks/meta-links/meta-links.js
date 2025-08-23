@@ -1,14 +1,10 @@
 import { moveInstrumentation } from '../../scripts/scripts.js';
 
 /**
- * Meta Links block - Displays multiple links with text and titles
+ * Meta Links block - Displays multiple links with text
  * @param {Element} block The meta-links block element
  */
 export default function decorate(block) {
-  // Debug: Log the block structure
-  console.log('Meta-links block structure:', block);
-  console.log('Block children:', block.children);
-  
   // Create container for all links
   const linksContainer = document.createElement('div');
   linksContainer.className = 'meta-links-container';
@@ -18,11 +14,7 @@ export default function decorate(block) {
   linksList.className = 'meta-links-list';
 
   // Process each row as a separate link item
-  [...block.children].forEach((row, index) => {
-    console.log(`Processing row ${index}:`, row);
-    console.log(`Row innerHTML:`, row.innerHTML);
-    console.log(`Row children:`, row.children);
-    
+  [...block.children].forEach((row) => {
     const listItem = document.createElement('li');
     listItem.className = 'meta-links-item';
     
@@ -30,8 +22,6 @@ export default function decorate(block) {
     moveInstrumentation(row, listItem);
 
     const cells = Array.from(row.children);
-    console.log(`Row ${index} cells:`, cells);
-
     let linkUrl = '';
     let linkText = '';
 
@@ -41,23 +31,16 @@ export default function decorate(block) {
     
     if (cells.length >= 1) {
       const firstCell = cells[0];
-      console.log(`First cell:`, firstCell, firstCell.innerHTML);
-      
       const linkElement = firstCell.querySelector('a');
+      
       if (linkElement) {
         // Extract URL from href attribute
         linkUrl = linkElement.href;
-        console.log(`Found link URL:`, linkUrl);
         
         // Extract text from link content
         linkText = linkElement.textContent.trim();
-        console.log(`Found link text:`, linkText);
-      } else {
-        console.log(`No link element found in cell`);
       }
     }
-
-    console.log(`Extracted data - URL: "${linkUrl}", Text: "${linkText}"`);
 
     // Create the link element if we have URL and text
     if (linkUrl && linkText) {
@@ -77,17 +60,7 @@ export default function decorate(block) {
       }
 
       linkWrapper.appendChild(linkElement);
-
       listItem.appendChild(linkWrapper);
-      console.log(`Created link wrapper for row ${index}`);
-    } else {
-      console.log(`Skipping row ${index} - missing URL or text`);
-      // Add debug info to the list item
-      const debugInfo = document.createElement('div');
-      debugInfo.textContent = `Debug: URL="${linkUrl}", Text="${linkText}"`;
-      debugInfo.style.color = 'red';
-      debugInfo.style.fontSize = '12px';
-      listItem.appendChild(debugInfo);
     }
 
     linksList.appendChild(listItem);
