@@ -1,0 +1,195 @@
+/* Meta Links block styling */
+.meta-links {
+  padding: var(--spacing-m, 24px);
+  background-color: var(--background-color, #f8f9fa);
+  border-radius: var(--border-radius, 8px);
+  margin: var(--spacing-l, 32px) 0;
+}
+
+.meta-links-container {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-s, 16px);
+}
+
+.meta-links-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-s, 16px);
+}
+
+.meta-links-item {
+  margin: 0;
+  padding: var(--spacing-s, 16px);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xs, 8px);
+  background-color: var(--color-white, #fff);
+  border-radius: var(--border-radius-s, 4px);
+  border: 1px solid var(--color-gray-200, #e5e7eb);
+  transition: box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+.meta-links-item:hover {
+  box-shadow: 0 2px 8px rgb(0 0 0 / 10%);
+  border-color: var(--color-primary, #007cba);
+}
+
+.meta-links-link {
+  display: inline-flex;
+  align-items: center;
+  color: var(--link-color, #007cba);
+  text-decoration: none;
+  font-size: var(--body-font-size-m, 16px);
+  font-weight: var(--font-weight-medium, 500);
+  line-height: 1.5;
+  transition: color 0.2s ease;
+  position: relative;
+}
+
+.meta-links-link:hover,
+.meta-links-link:focus {
+  color: var(--link-hover-color, #005a87);
+  text-decoration: underline;
+  outline: none;
+}
+
+.meta-links-link:focus-visible {
+  outline: 2px solid var(--focus-color, #007cba);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+.meta-links-title {
+  font-size: var(--body-font-size-s, 14px);
+  color: var(--text-color-secondary, #6b7280);
+  line-height: 1.4;
+  font-style: italic;
+  margin-top: var(--spacing-xs, 4px);
+}
+
+/* External link indicator */
+.meta-links-link[target="_blank"]::after {
+  content: '↗';
+  margin-left: var(--spacing-xs, 8px);
+  font-size: 0.8em;
+  opacity: 0.7;
+  font-weight: normal;
+}
+
+/* Responsive design */
+@media (width <= 768px) {
+  .meta-links {
+    padding: var(--spacing-s, 16px);
+    margin: var(--spacing-m, 24px) 0;
+  }
+
+  .meta-links-container {
+    gap: var(--spacing-xs, 12px);
+  }
+
+  .meta-links-list {
+    gap: var(--spacing-xs, 12px);
+  }
+
+  .meta-links-item {
+    padding: var(--spacing-xs, 12px);
+  }
+
+  .meta-links-link {
+    font-size: var(--body-font-size-s, 14px);
+  }
+
+  .meta-links-title {
+    font-size: var(--body-font-size-xs, 12px);
+  }
+}
+
+@media (width <= 480px) {
+  .meta-links {
+    padding: var(--spacing-xs, 12px);
+    margin: var(--spacing-s, 16px) 0;
+  }
+
+  .meta-links-item {
+    padding: var(--spacing-xs, 10px);
+  }
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: more) {
+  .meta-links-link {
+    text-decoration: underline;
+  }
+
+  .meta-links-item {
+    border-width: 2px;
+  }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  .meta-links-link,
+  .meta-links-item {
+    transition: none;
+  }
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+  .meta-links {
+    background-color: var(--background-color-dark, #1a1a1a);
+  }
+
+  .meta-links-item {
+    background-color: var(--color-gray-800, #1f2937);
+    border-color: var(--color-gray-700, #374151);
+  }
+
+  .meta-links-item:hover {
+    border-color: var(--color-primary-dark, #4db8ff);
+    box-shadow: 0 2px 8px rgb(0 0 0 / 30%);
+  }
+
+  .meta-links-link {
+    color: var(--link-color-dark, #4db8ff);
+  }
+
+  .meta-links-link:hover,
+  .meta-links-link:focus {
+    color: var(--link-hover-color-dark, #80ccff);
+  }
+
+  .meta-links-title {
+    color: var(--text-color-secondary-dark, #9ca3af);
+  }
+}
+
+/* Print styles */
+@media print {
+  .meta-links {
+    background: none;
+    border: 1px solid #000;
+    box-shadow: none;
+  }
+
+  .meta-links-item {
+    background: none;
+    border: none;
+    box-shadow: none;
+    page-break-inside: avoid;
+  }
+
+  .meta-links-link::after {
+    content: ' (' attr(href) ')';
+    font-size: 0.8em;
+    color: #666;
+  }
+
+  .meta-links-link[target="_blank"]::after {
+    content: ' (' attr(href) ')';
+  }
+}
