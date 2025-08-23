@@ -24,7 +24,7 @@
           "component": "container",
           "name": "links",
           "label": "Links",
-          "multi": false,
+          "multi": true,
           "fields": [
             {
               "component": "aem-content",
