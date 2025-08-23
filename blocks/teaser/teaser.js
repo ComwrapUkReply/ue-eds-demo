@@ -58,6 +58,13 @@ export default function decorate(block) {
     
     const cells = [...row.children];
     
+    // Check if this row contains linkText data
+    const linkTextElement = row.querySelector('[data-aue-prop="linkText"]');
+    if (linkTextElement) {
+      // eslint-disable-next-line no-console
+      console.log('Found linkText element:', linkTextElement, 'content:', linkTextElement.textContent);
+    }
+    
     cells.forEach((cell, cellIndex) => {
       // eslint-disable-next-line no-console
       console.log(`Processing cell ${cellIndex}:`, cell);
@@ -133,6 +140,24 @@ export default function decorate(block) {
         const link = element.querySelector('a');
         if (link && !linkElement) {
           linkElement = link.cloneNode(true);
+          
+          // Check if this is a Universal Editor link with data-aue-prop="linkText"
+          if (link.hasAttribute('data-aue-prop') && link.getAttribute('data-aue-prop') === 'linkText') {
+            // For Universal Editor, the linkText should be separate from the link URL
+            // Use the default value from the component model if no proper text is found
+            let linkText = 'Learn More'; // Default from component model
+            
+            // Check if there's actual link text that's not a path
+            const currentText = link.textContent?.trim();
+            if (currentText && !currentText.startsWith('/content/') && !currentText.startsWith('http')) {
+              linkText = currentText;
+            }
+            
+            linkElement.textContent = linkText;
+            // eslint-disable-next-line no-console
+            console.log('Found Universal Editor link, using linkText:', linkText);
+          }
+          
           // eslint-disable-next-line no-console
           console.log('Found link:', linkElement.href, linkElement.textContent);
           return;
