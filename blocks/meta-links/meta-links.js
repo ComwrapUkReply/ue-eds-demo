@@ -93,14 +93,6 @@ export default function decorate(block) {
 
       linkWrapper.appendChild(linkElement);
 
-      // Add title as subtitle if provided
-      if (linkTitle) {
-        const titleElement = document.createElement('p');
-        titleElement.className = 'meta-links-description';
-        titleElement.textContent = linkTitle;
-        linkWrapper.appendChild(titleElement);
-      }
-
       listItem.appendChild(linkWrapper);
       console.log(`Created link wrapper for row ${index}`);
     } else {

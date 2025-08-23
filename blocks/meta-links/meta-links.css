@@ -68,13 +68,7 @@
   border-radius: 2px;
 }
 
-.meta-links-description {
-  font-size: var(--body-font-size-s, 14px);
-  color: var(--text-color-secondary, #6b7280);
-  line-height: 1.4;
-  font-style: italic;
-  margin: var(--spacing-xs, 8px) 0 0 0;
-}
+
 
 /* External link indicator */
 .meta-links-link[target="_blank"]::after {
@@ -108,9 +102,7 @@
     font-size: var(--body-font-size-s, 14px);
   }
 
-  .meta-links-description {
-    font-size: var(--body-font-size-xs, 12px);
-  }
+
 }
 
 @media (width <= 480px) {
@@ -172,9 +164,7 @@
     color: var(--link-hover-color-dark, #80ccff);
   }
 
-  .meta-links-description {
-    color: var(--text-color-secondary-dark, #9ca3af);
-  }
+
 }
 
 /* Print styles */
