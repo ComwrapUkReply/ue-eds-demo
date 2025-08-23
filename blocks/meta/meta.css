@@ -1,0 +1,135 @@
+/* Meta block styling */
+.meta {
+  padding: var(--spacing-m, 24px);
+  text-align: center;
+  background-color: var(--background-color, #f8f9fa);
+  border-radius: var(--border-radius, 8px);
+  margin: var(--spacing-l, 32px) 0;
+}
+
+.meta-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.meta-cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--spacing-s, 16px) var(--spacing-m, 24px);
+  background-color: var(--color-primary, #007cba);
+  color: var(--color-white, #fff);
+  text-decoration: none;
+  font-size: var(--body-font-size-m, 16px);
+  font-weight: var(--font-weight-medium, 500);
+  border-radius: var(--border-radius, 8px);
+  transition: background-color 0.2s ease, transform 0.2s ease;
+  line-height: 1.5;
+}
+
+.meta-cta:hover,
+.meta-cta:focus {
+  background-color: var(--color-primary-hover, #005a87);
+  text-decoration: none;
+  transform: translateY(-2px);
+  outline: none;
+}
+
+.meta-cta:focus-visible {
+  outline: 2px solid var(--focus-color, #007cba);
+  outline-offset: 2px;
+}
+
+/* External link indicator */
+.meta-cta[target="_blank"]::after {
+  content: '↗';
+  margin-left: var(--spacing-xs, 8px);
+  font-size: 0.8em;
+  opacity: 0.9;
+}
+
+/* Responsive design */
+@media (width <= 768px) {
+  .meta {
+    padding: var(--spacing-s, 16px);
+    margin: var(--spacing-m, 24px) 0;
+  }
+
+  .meta-cta {
+    padding: var(--spacing-s, 14px) var(--spacing-s, 20px);
+    font-size: var(--body-font-size-s, 14px);
+  }
+}
+
+@media (width <= 480px) {
+  .meta {
+    padding: var(--spacing-xs, 12px);
+    margin: var(--spacing-s, 16px) 0;
+  }
+
+  .meta-cta {
+    padding: var(--spacing-xs, 12px) var(--spacing-s, 16px);
+    font-size: var(--body-font-size-s, 14px);
+  }
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: more) {
+  .meta-cta {
+    border: 2px solid var(--color-white, #fff);
+  }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  .meta-cta {
+    transition: none;
+    transform: none;
+  }
+
+  .meta-cta:hover {
+    transform: none;
+  }
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+  .meta {
+    background-color: var(--background-color-dark, #1a1a1a);
+  }
+
+  .meta-cta {
+    background-color: var(--color-primary-dark, #4db8ff);
+    color: var(--color-black, #000);
+  }
+
+  .meta-cta:hover,
+  .meta-cta:focus {
+    background-color: var(--color-primary-hover-dark, #80ccff);
+  }
+}
+
+/* Print styles */
+@media print {
+  .meta {
+    background: none;
+    border: 1px solid #000;
+  }
+
+  .meta-cta {
+    background: none;
+    color: #000;
+    border: 1px solid #000;
+  }
+
+  .meta-cta::after {
+    content: ' (' attr(href) ')';
+    font-size: 0.8em;
+    color: #666;
+  }
+
+  .meta-cta[target="_blank"]::after {
+    content: ' (' attr(href) ')';
+  }
+}
