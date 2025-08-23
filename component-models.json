@@ -1,122 +1,5 @@
 [
   {
-    "id": "page-metadata",
-    "fields": [
-      {
-        "component": "text",
-        "valueType": "string",
-        "name": "jcr:title",
-        "label": "Title"
-      },
-      {
-        "component": "text",
-        "valueType": "string",
-        "name": "jcr:description",
-        "label": "Description"
-      },
-      {
-        "component": "text",
-        "valueType": "string",
-        "name": "cq:canonicalUrl",
-        "label": "Canonical"
-      },
-      {
-        "component": "aem-tag",
-        "valueType": "string",
-        "name": "cq:tags",
-        "label": "Tags"
-      },
-      {
-        "component": "text",
-        "valueType": "string",
-        "name": "keywords",
-        "multi": true,
-        "label": "Keywords"
-      },
-      {
-        "component": "text",
-        "valueType": "string",
-        "name": "topics",
-        "multi": true,
-        "label": "Topics"
-      },
-      {
-        "component": "select",
-        "name": "template",
-        "label": "Template name",
-        "options": [
-          {
-            "name": "Library",
-            "value": "library"
-          },
-          {
-            "name": "Author",
-            "value": "author"
-          },
-          {
-            "name": "Blog Post",
-            "value": "blogpost"
-          },
-          {
-            "name": "Category",
-            "value": "category"
-          }
-        ]
-      },
-      {
-        "component": "text",
-        "valueType": "string",
-        "name": "author",
-        "label": "Author"
-      },
-      {
-        "component": "text",
-        "valueType": "string",
-        "name": "position",
-        "label": "Author Position"
-      },
-      {
-        "component": "text",
-        "valueType": "string",
-        "name": "e-mail",
-        "label": "Author Email"
-      },
-      {
-        "component": "text",
-        "valueType": "string",
-        "name": "brand",
-        "label": "Brand"
-      },
-      {
-        "component": "text",
-        "valueType": "number",
-        "name": "readingTime",
-        "label": "Reading Time"
-      },
-      {
-        "component": "date-time",
-        "valueType": "date-time",
-        "name": "publishDate",
-        "label": "Publish Date",
-        "placeholder": "YYYY-MM-DD",
-        "displayFormat": null,
-        "valueFormat": null
-      },
-      {
-        "component": "text",
-        "valueType": "string",
-        "name": "language",
-        "label": "Language"
-      },
-      {
-        "component": "text",
-        "valueType": "string",
-        "name": "primary-language-url",
-        "label": "Primary Language URL"
-      }
-    ]
-  },
-  {
     "id": "image",
     "fields": [
       {
@@ -254,6 +137,39 @@
     ]
   },
   {
+    "id": "carousel-slide",
+    "fields": [
+      {
+        "component": "reference",
+        "valueType": "string",
+        "name": "image",
+        "label": "Image",
+        "multi": false
+      },
+      {
+        "component": "text",
+        "valueType": "string",
+        "name": "imageAlt",
+        "label": "Alt Text",
+        "value": ""
+      },
+      {
+        "component": "richtext",
+        "name": "title",
+        "value": "",
+        "label": "Title",
+        "valueType": "string"
+      },
+      {
+        "component": "richtext",
+        "name": "text",
+        "value": "",
+        "label": "Description",
+        "valueType": "string"
+      }
+    ]
+  },
+  {
     "id": "columns",
     "fields": [
       {
@@ -305,7 +221,7 @@
         "name": "title",
         "label": "Title",
         "value": ""
-      },  
+      },
       {
         "component": "richtext",
         "name": "text",
@@ -326,87 +242,64 @@
     ]
   },
   {
+    "id": "meta",
+    "fields": [
+      {
+        "component": "reference",
+        "name": "link",
+        "label": "Link",
+        "value": "",
+        "multi": true
+      }
+    ]
+  },
+  {
     "id": "quote",
     "fields": [
-       {
-         "component": "richtext",
-         "name": "quote",
-         "value": "",
-         "label": "Quote",
-         "valueType": "string"
-       },
-       {
-         "component": "text",
-         "valueType": "string",
-         "name": "author",
-         "label": "Author",
-         "value": "string"
-       },
-       {
+      {
+        "component": "richtext",
+        "name": "quote",
+        "value": "",
+        "label": "Quote",
+        "valueType": "string"
+      },
+      {
+        "component": "text",
+        "name": "author",
+        "value": "",
+        "label": "Author",
+        "valueType": "string"
+      },
+      {
         "component": "select",
         "name": "classes",
-        "label": "Background Styles",
         "value": "",
+        "label": "Background Styles",
         "description": "The background styles of the quote",
         "valueType": "string",
         "options": [
           {
             "name": "Default",
-            "value": "default"
+            "value": "",
+            "description": "The default background style"
           },
           {
             "name": "Highlight",
-            "value": "highlight"
+            "value": "highlight",
+            "description": "The highlight background style"
           },
           {
             "name": "Dark",
-            "value": "dark"
+            "value": "dark",
+            "description": "The dark background style"
           },
           {
             "name": "Light",
-            "value": "light"
+            "value": "light",
+            "description": "The light background style"
           }
         ]
-       }
-     ]
-  },
-  {
-    "id": "carousel-slide",
-    "fields": [
-      {
-        "component": "reference",
-        "valueType": "string",
-        "name": "image",
-        "label": "Image",
-        "multi": false
-      },
-      {
-        "component": "text",
-        "valueType": "string",
-        "name": "imageAlt",
-        "label": "Alt Text",
-        "value": ""
-      },
-      {
-        "component": "richtext",
-        "name": "title",
-        "value": "",
-        "label": "Title",
-        "valueType": "string"
-      },
-      {
-        "component": "richtext",
-        "name": "text",
-        "value": "",
-        "label": "Description",
-        "valueType": "string"
       }
-    ]
-  },
-  {
-    "id": "search",
-    "fields": [
-      
     ]
   },
   {
@@ -459,7 +352,7 @@
         "options": [
           {
             "name": "Default (Vertical)",
-            "value": ""
+            "value": "default"
           },
           {
             "name": "Horizontal",

@@ -113,6 +113,36 @@
           }
         },
         {
+          "title": "Carousel",
+          "id": "carousel",
+          "plugins": {
+            "xwalk": {
+              "page": {
+                "resourceType": "core/franklin/components/block/v1/block",
+                "template": {
+                  "name": "Carousel",
+                  "filter": "carousel"
+                }
+              }
+            }
+          }
+        },
+        {
+          "title": "Carousel Slide",
+          "id": "carousel-slide",
+          "plugins": {
+            "xwalk": {
+              "page": {
+                "resourceType": "core/franklin/components/block/v1/block/item",
+                "template": {
+                  "name": "Carousel Slide",
+                  "model": "carousel-slide"
+                }
+              }
+            }
+          }
+        },
+        {
           "title": "Columns",
           "id": "columns",
           "plugins": {
@@ -158,30 +188,15 @@
           }
         },
         {
-          "title": "Carousel",
-          "id": "carousel",
+          "title": "Meta",
+          "id": "meta",
           "plugins": {
             "xwalk": {
               "page": {
                 "resourceType": "core/franklin/components/block/v1/block",
                 "template": {
-                  "name": "Carousel",
-                  "filter": "carousel"
-                }
-              }
-            }
-          }
-        },
-        {
-          "title": "Carousel Slide",
-          "id": "carousel-slide",
-          "plugins": {
-            "xwalk": {
-              "page": {
-                "resourceType": "core/franklin/components/block/v1/block/item",
-                "template": {
-                  "name": "Carousel Slide",
-                  "model": "carousel-slide"
+                  "name": "Meta",
+                  "model": "meta"
                 }
               }
             }
@@ -197,27 +212,10 @@
                 "template": {
                   "name": "Quote",
                   "model": "quote",
-                  "quote": "<p>Think, McFly! Think!</p>",
-                  "author": "Biff Tannen"
-                }
-              }
-            }
-          }
-        },
-        {
-          "title": "Search",
-          "id": "search",
-          "plugins": {
-            "xwalk": {
-              "page": {
-                "resourceType": "core/franklin/components/block/v1/block",
-                "template": {
-                  "name": "Search",
-                  "model": "search",
-                  "index": "article-index",
-                  "queryProperty": "title",
-                  "sortProperty": "lastModified",
-                  "sortOrder": "desc"
+                  "classes": "quote",
+                  "textContent_quote": "<p>Enter a quote here!</p>",
+                  "textContent_author": "John Doe",
+                  "textContent_style": "default"
                 }
               }
             }
@@ -229,7 +227,7 @@
           "plugins": {
             "xwalk": {
               "page": {
-                "resourceType": "core/franklin/components/block/v1/block",  
+                "resourceType": "core/franklin/components/block/v1/block",
                 "template": {
                   "name": "Teaser",
                   "model": "teaser"
