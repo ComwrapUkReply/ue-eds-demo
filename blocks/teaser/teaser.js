@@ -71,13 +71,13 @@ export default function decorate(block) {
         console.log('Cell has direct text content:', textContent);
         
         // Try to determine what type of content this is
-        if (!titleElement && textContent.length > 5 && textContent.length < 100) {
+        if (!titleElement && textContent.length > 0) {
           const h2 = document.createElement('h2');
           h2.textContent = textContent;
           titleElement = h2;
           // eslint-disable-next-line no-console
           console.log('Found title in cell text:', titleElement.textContent);
-        } else if (!descriptionElement && textContent.length > 20) {
+        } else if (!descriptionElement && textContent.length > 0 && titleElement) {
           const p = document.createElement('p');
           p.textContent = textContent;
           descriptionElement = p;
@@ -111,16 +111,21 @@ export default function decorate(block) {
         }
         
         // Check for DIV with title-like content (Universal Editor structure)
-        if (element.tagName === 'DIV' && element.textContent?.trim() && !titleElement) {
-          const textContent = element.textContent.trim();
-          // Skip very long content (likely descriptions) and empty content
-          if (textContent.length > 5 && textContent.length < 100 && !textContent.includes('\n')) {
-            const h2 = document.createElement('h2');
-            h2.textContent = textContent;
-            titleElement = h2;
-            // eslint-disable-next-line no-console
-            console.log('Found title in DIV:', titleElement.textContent);
-            return;
+        if (element.tagName === 'DIV' && !titleElement) {
+          const textContent = element.textContent?.trim();
+          // eslint-disable-next-line no-console
+          console.log('DIV element textContent:', `"${textContent}"`, 'length:', textContent?.length);
+          
+          if (textContent && textContent.length > 0) {
+            // More lenient check for title content
+            if (textContent.length <= 200 && !textContent.includes('\n\n')) {
+              const h2 = document.createElement('h2');
+              h2.textContent = textContent;
+              titleElement = h2;
+              // eslint-disable-next-line no-console
+              console.log('Found title in DIV:', titleElement.textContent);
+              return;
+            }
           }
         }
 
@@ -142,16 +147,22 @@ export default function decorate(block) {
         }
         
         // Check for DIV with description-like content (Universal Editor structure)
-        if (element.tagName === 'DIV' && element.textContent?.trim() && !descriptionElement && titleElement) {
-          const textContent = element.textContent.trim();
-          // Look for longer text content that's likely a description
-          if (textContent.length > 20) {
-            const p = document.createElement('p');
-            p.textContent = textContent;
-            descriptionElement = p;
-            // eslint-disable-next-line no-console
-            console.log('Found description in DIV:', descriptionElement.textContent);
-            return;
+        if (element.tagName === 'DIV' && !descriptionElement) {
+          const textContent = element.textContent?.trim();
+          // eslint-disable-next-line no-console
+          console.log('DIV element for description check:', `"${textContent}"`, 'length:', textContent?.length, 'hasTitle:', !!titleElement);
+          
+          if (textContent && textContent.length > 0) {
+            // If we already have a title, this could be description
+            // Or if it's longer content, treat as description
+            if (titleElement || textContent.length > 50) {
+              const p = document.createElement('p');
+              p.textContent = textContent;
+              descriptionElement = p;
+              // eslint-disable-next-line no-console
+              console.log('Found description in DIV:', descriptionElement.textContent);
+              return;
+            }
           }
         }
       });
