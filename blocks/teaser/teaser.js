@@ -66,20 +66,38 @@ export default function decorate(block) {
       
       // If no child elements, check if the cell itself has content
       if (elements.length === 0 && cell.textContent.trim()) {
+        const textContent = cell.textContent.trim();
         // eslint-disable-next-line no-console
-        console.log('Cell has direct text content:', cell.textContent.trim());
+        console.log('Cell has direct text content:', textContent);
+        
+        // Try to determine what type of content this is
+        if (!titleElement && textContent.length > 5 && textContent.length < 100) {
+          const h2 = document.createElement('h2');
+          h2.textContent = textContent;
+          titleElement = h2;
+          // eslint-disable-next-line no-console
+          console.log('Found title in cell text:', titleElement.textContent);
+        } else if (!descriptionElement && textContent.length > 20) {
+          const p = document.createElement('p');
+          p.textContent = textContent;
+          descriptionElement = p;
+          // eslint-disable-next-line no-console
+          console.log('Found description in cell text:', descriptionElement.textContent);
+        }
       }
       
       elements.forEach((element, elementIndex) => {
         // eslint-disable-next-line no-console
         console.log(`Processing element ${elementIndex}:`, element.tagName, element.textContent?.trim());
         
-        // Check for image
-        const img = element.querySelector('img');
-        if (img && !imageElement) {
-          imageElement = img;
+        // Check for image (in picture or img tags)
+        const img = element.querySelector('img') || (element.tagName === 'IMG' ? element : null);
+        const picture = element.querySelector('picture') || (element.tagName === 'PICTURE' ? element : null);
+        
+        if ((img || picture) && !imageElement) {
+          imageElement = img || picture.querySelector('img');
           // eslint-disable-next-line no-console
-          console.log('Found image:', img.src);
+          console.log('Found image:', imageElement?.src);
           return;
         }
 
@@ -90,6 +108,20 @@ export default function decorate(block) {
           // eslint-disable-next-line no-console
           console.log('Found title:', titleElement.textContent);
           return;
+        }
+        
+        // Check for DIV with title-like content (Universal Editor structure)
+        if (element.tagName === 'DIV' && element.textContent?.trim() && !titleElement) {
+          const textContent = element.textContent.trim();
+          // Skip very long content (likely descriptions) and empty content
+          if (textContent.length > 5 && textContent.length < 100 && !textContent.includes('\n')) {
+            const h2 = document.createElement('h2');
+            h2.textContent = textContent;
+            titleElement = h2;
+            // eslint-disable-next-line no-console
+            console.log('Found title in DIV:', titleElement.textContent);
+            return;
+          }
         }
 
         // Check for links (CTA button)
@@ -107,6 +139,20 @@ export default function decorate(block) {
           // eslint-disable-next-line no-console
           console.log('Found description:', descriptionElement.textContent);
           return;
+        }
+        
+        // Check for DIV with description-like content (Universal Editor structure)
+        if (element.tagName === 'DIV' && element.textContent?.trim() && !descriptionElement && titleElement) {
+          const textContent = element.textContent.trim();
+          // Look for longer text content that's likely a description
+          if (textContent.length > 20) {
+            const p = document.createElement('p');
+            p.textContent = textContent;
+            descriptionElement = p;
+            // eslint-disable-next-line no-console
+            console.log('Found description in DIV:', descriptionElement.textContent);
+            return;
+          }
         }
       });
     });
