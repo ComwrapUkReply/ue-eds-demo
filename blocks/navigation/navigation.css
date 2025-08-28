@@ -1,5 +1,6 @@
+/* wrapper intentionally minimal; avoid container styling per rules */
 .navigation-wrapper {
-  /* wrapper intentionally minimal; avoid container styling per rules */
+  display: block;
 }
 
 .navigation {
@@ -21,16 +22,16 @@
 
 .navigation .navigation-link {
   text-decoration: none;
+  cursor: pointer;
 }
 
-.navigation .has-children > .navigation-toggle {
-  appearance: none;
-  border: 0;
-  background: none;
-  width: 1.25rem;
-  height: 1.25rem;
-  margin-left: var(--space-2);
+.navigation .has-children > .navigation-link {
   cursor: pointer;
+}
+
+.navigation .has-children > .navigation-link:hover,
+.navigation .has-children > .navigation-link:focus {
+  text-decoration: underline;
 }
 
 .navigation .navigation-children {
@@ -38,6 +39,10 @@
   padding-left: 0;
   margin: var(--space-2) 0 0;
   display: none;
+}
+
+.navigation .navigation-children.open {
+  display: block;
 }
 
 .navigation .navigation-item[aria-expanded='true'] > .navigation-children {

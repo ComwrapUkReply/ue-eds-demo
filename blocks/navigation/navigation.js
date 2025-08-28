@@ -185,32 +185,57 @@ function renderNavigation(container, roots, childrenByParent, base) {
     const li = document.createElement('li');
     li.className = 'navigation-item';
 
-    const a = document.createElement('a');
-    a.href = rootItem.path;
-    a.textContent = rootItem.title;
-    a.className = 'navigation-link';
-    li.appendChild(a);
-
     const children = childrenByParent.get(normalizePath(rootItem.path))
       || childrenByParent.get(base)
       || [];
+
+    const a = document.createElement('a');
+    a.textContent = rootItem.title;
+    a.className = 'navigation-link';
+
+    // If item has children, disable the link and make it clickable for submenu toggle
+    if (children.length > 0) {
+      a.setAttribute('tabindex', '0');
+      a.setAttribute('role', 'button');
+      a.setAttribute('aria-expanded', 'false');
+      a.setAttribute('aria-label', `Toggle ${rootItem.title} submenu`);
+    } else {
+      a.href = rootItem.path;
+    }
+
+    li.appendChild(a);
 
     if (children.length > 0) {
       li.classList.add('has-children');
       li.setAttribute('aria-expanded', 'false');
 
-      const toggle = document.createElement('button');
-      toggle.type = 'button';
-      toggle.className = 'navigation-toggle';
-      toggle.setAttribute('aria-label', `Toggle ${rootItem.title}`);
-      toggle.addEventListener('click', () => {
-        const expanded = li.getAttribute('aria-expanded') === 'true';
-        li.setAttribute('aria-expanded', expanded ? 'false' : 'true');
-      });
-      li.appendChild(toggle);
-
       const childList = document.createElement('ul');
       childList.className = 'navigation-children';
+
+      // Add click event to parent link for submenu toggle
+      a.addEventListener('click', (e) => {
+        e.preventDefault();
+        const isExpanded = li.getAttribute('aria-expanded') === 'true';
+        const newState = !isExpanded;
+
+        li.setAttribute('aria-expanded', newState ? 'true' : 'false');
+        a.setAttribute('aria-expanded', newState ? 'true' : 'false');
+
+        // Toggle open class on submenu
+        if (newState) {
+          childList.classList.add('open');
+        } else {
+          childList.classList.remove('open');
+        }
+      });
+
+      // Add keyboard support for Enter and Space keys
+      a.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          a.click();
+        }
+      });
       children.forEach((child) => {
         const cli = document.createElement('li');
         cli.className = 'navigation-child-item';
