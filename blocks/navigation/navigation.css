@@ -1,0 +1,68 @@
+.navigation-wrapper {
+  /* wrapper intentionally minimal; avoid container styling per rules */
+}
+
+.navigation {
+  width: 100%;
+}
+
+.navigation .navigation-root {
+  list-style: none;
+  padding-left: 0;
+  margin: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-4);
+}
+
+.navigation .navigation-item {
+  position: relative;
+}
+
+.navigation .navigation-link {
+  text-decoration: none;
+}
+
+.navigation .has-children > .navigation-toggle {
+  appearance: none;
+  border: 0;
+  background: none;
+  width: 1.25rem;
+  height: 1.25rem;
+  margin-left: var(--space-2);
+  cursor: pointer;
+}
+
+.navigation .navigation-children {
+  list-style: none;
+  padding-left: 0;
+  margin: var(--space-2) 0 0;
+  display: none;
+}
+
+.navigation .navigation-item[aria-expanded='true'] > .navigation-children {
+  display: block;
+}
+
+.navigation .navigation-child-item {
+  margin-bottom: var(--space-2);
+}
+
+.navigation .navigation-description {
+  margin: 0.25rem 0 0;
+  font-size: var(--font-size-body-s);
+  color: var(--color-text-muted, #666);
+}
+
+@media (width >= 900px) {
+  .navigation .navigation-children {
+    position: absolute;
+    background: var(--light-color);
+    padding: var(--space-4);
+    min-width: 220px;
+    z-index: 2;
+    box-shadow: 0 2px 8px rgb(0 0 0 / 10%);
+  }
+}
+
+
