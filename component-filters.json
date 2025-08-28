@@ -16,9 +16,11 @@
       "cards",
       "columns",
       "fragment",
-      "teaser",
-      "meta",
-      "meta-links"
+      "meta-links",
+      "navigation",
+      "quote",
+      "search",
+      "quick-search"
     ]
   },
   {
@@ -53,5 +55,9 @@
     "components": [
       "meta-link"
     ]
+  },
+  {
+    "id": "navigation",
+    "components": []
   }
 ]

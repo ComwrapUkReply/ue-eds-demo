@@ -51,7 +51,11 @@
         "cards",
         "columns",
         "fragment",
-        "meta-links"
+        "meta-links",
+        "navigation",
+        "quote",
+        "search",
+        "quick-search"
       ]
     }
   ]

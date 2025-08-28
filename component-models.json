@@ -279,6 +279,25 @@
     ]
   },
   {
+    "id": "navigation",
+    "fields": [
+      {
+        "component": "text",
+        "name": "root-path",
+        "label": "Root Path",
+        "valueType": "string",
+        "value": "/"
+      },
+      {
+        "component": "text",
+        "name": "max-depth",
+        "label": "Max Depth (1-4)",
+        "valueType": "number",
+        "value": "2"
+      }
+    ]
+  },
+  {
     "id": "quote",
     "fields": [
       {
