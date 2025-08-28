@@ -52,10 +52,8 @@
         "columns",
         "fragment",
         "meta-links",
-        "navigation",
         "quote",
-        "search",
-        "quick-search"
+        "search"
       ]
     }
   ]
