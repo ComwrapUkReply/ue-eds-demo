@@ -16,6 +16,10 @@ const NAV_CONFIG = {
     LOAD_ERROR: 'Navigation failed to load.',
     EMPTY: 'No navigation items available.',
   },
+  EXCLUDED_PATHS: [
+    '/footer',
+    '/header',
+  ],
 };
 
 /**
@@ -123,6 +127,9 @@ function buildHierarchy(rows, rootPath = '/', maxDepth = 2) {
 
     // exclude robots noindex pages if robots field is present
     if (typeof row.robots === 'string' && row.robots.toLowerCase().includes('noindex')) return;
+
+    // exclude footer and header paths from navigation
+    if (NAV_CONFIG.EXCLUDED_PATHS.some((excludedPath) => path === excludedPath || path.startsWith(`${excludedPath}/`))) return;
 
     const segments = path.split('/').filter(Boolean);
     const depth = segments.length;
