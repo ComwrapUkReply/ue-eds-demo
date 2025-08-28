@@ -18,7 +18,7 @@ const NAV_CONFIG = {
   },
   EXCLUDED_PATHS: [
     '/footer',
-    '/header',
+    '/nav',
   ],
 };
 
