@@ -55,7 +55,8 @@
         "quote",
         "search",
         "quick-search",
-        "navigation"
+        "navigation",
+        "card-slider"
       ]
     }
   ]
