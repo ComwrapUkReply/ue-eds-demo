@@ -4,7 +4,6 @@
 }
 
 .hero {
-  position: relative;
   padding: 40px 24px;
   min-height: 600px;
   display: flex;
@@ -13,7 +12,7 @@
   justify-content: flex-end;
   position: relative;
 }
-  /* Add white gradient overlay from left to right (solid to transparent) */
+
   .hero::before {
     content: '';
     position: absolute;
@@ -21,7 +20,7 @@
     left: 0;
     width: 60%;
     height: 100%;
-    background: linear-gradient(to right, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0));
+    background: linear-gradient(to right, rgb(255 255 255 / 90%), rgb(255 255 255 / 0%));
     z-index: 0;
     pointer-events: none;
 }
