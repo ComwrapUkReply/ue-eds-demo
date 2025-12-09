@@ -1,9 +1,4 @@
 /* stylelint-disable max-line-length */
-
-/* Interstate Font Family - for Figma design matching */
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@200;275;400;500;600;700&display=swap');
-
-/* Fallback for Interstate - using Inter as closest match */
 @font-face {
   font-family: roboto-condensed;
   font-style: normal;

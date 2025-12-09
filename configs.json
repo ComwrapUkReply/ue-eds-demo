@@ -1,0 +1,32 @@
+{
+  "projectType": "EDS_UE",
+  "colors": [
+    {
+      "name": "primary",
+      "hex": "green"
+    },
+    {
+      "name": "secondary",
+      "hex": "red"
+    }
+  ],
+  "fonts": [],
+  "dependencies": [],
+  "libraries": [
+    "Nice-select",
+    "Nice-tag",
+    "Nice-text",
+    "Plyr",
+    "Swiper"
+  ],
+  "samples": [
+    "Article feed",
+    "Event Teaser",
+    "Framed Grid",
+    "Teaser List"
+  ],
+  "authorUrl": "https://author-p24706-e491522.adobeaemcloud.com/",
+  "organization": "ComwrapReply",
+  "project": "ue-eds-demo",
+  "aiRules": true
+}

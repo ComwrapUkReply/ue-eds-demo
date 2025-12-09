@@ -1,101 +1,94 @@
 version: 1
 
 indices:
-  default:
-    include:
-      - /**
-    exclude:
-      - /configuration/**
-      - /nav/**
-      - /footer/**
-      - /metadata/**
-      - /fragments/**
-      - /style-guide/**
-      - /spreadsheets/**
-      - /tools/**
-      - /models/**
-      - /blocks/**
-      - /scripts/**
-      - /styles/**
-      - /icons/**
-      - /fonts/**
-      - /**.json
-      - /**.css
-      - /**.js
+  default: &default
     target: /query-index.json
+    exclude:
+      - '**/drafts/**'
     properties:
+      path:
+        select: none
+        value: |
+          path
       title:
         select: head > meta[property="og:title"]
-        value: attribute(el, "content")
+        value: |
+          attribute(el, 'content')
       description:
-        select: head > meta[name="description"]
-        value: attribute(el, "content")
-      image:
-        select: head > meta[property="og:image"]
-        value: match(attribute(el, "content"), "^(https?:\/\/.*?(ue-eds-demo.com))+(.*)|^(.*)")
-      imageAlt:
-        select: head > meta[property="og:image:alt"]
-        value: attribute(el, "content")
-      topics:
-        select: head > meta[name="topics"]
-        value: attribute(el, "content")
-      category:
-        select: head > meta[name="category"]
-        value: attribute(el, "content")
-      template:
-        select: head > meta[name="template"]
-        value: attribute(el, "content")
-      lastModified:
-        select: none
-        value: parseTimestamp(headers["last-modified"], "ddd, DD MMM YYYY hh:mm:ss GMT")
+        select: head > meta[property="og:description"]
+        value: |
+          attribute(el, 'content')
       robots:
         select: head > meta[name="robots"]
-        value: attribute(el, "content")
-      
-  # Articles-specific index for targeted search
-  articles:
-    include:
-      - /articles/**
-      - /blog/**
-      - /news/**
-    exclude:
-      - /articles/drafts/**
-      - /blog/drafts/**
-    target: /article-index.json
-    properties:
-      lastModified:
-        select: none
-        value: parseTimestamp(headers["last-modified"], "ddd, DD MMM YYYY hh:mm:ss GMT")
-      title:
-        select: head > meta[property="og:title"]
-        value: attribute(el, "content")
-      description:
-        select: head > meta[name="description"]
-        value: attribute(el, "content")
+        value: |
+          attribute(el, 'content')
+      tags:
+        select: head > meta[name="cq-tags"]
+        values: |
+          attribute(el, 'content')
       image:
         select: head > meta[property="og:image"]
-        value: match(attribute(el, "content"), "^(https?:\/\/.*?(ue-eds-demo.com))+(.*)|^(.*)")
-      imageAlt:
-        select: head > meta[property="og:image:alt"]
-        value: attribute(el, "content")
-      topics:
-        select: head > meta[name="topics"]
-        value: attribute(el, "content")
-      authors:
-        select: head > meta[name="authors"]
-        value: attribute(el, "content")
-      category:
-        select: head > meta[name="category"]
-        value: attribute(el, "content")
-      readingTime:
-        select: head > meta[name="readingtime"]
-        value: attribute(el, "content")
-      articlePublishDate:
-        select: head > meta[name="publishdate"]
-        value: attribute(el, "content")
-      type:
+        value: |
+          attribute(el, 'content')
+      template:
         select: head > meta[name="template"]
+        value: |
+          attribute(el, 'content')
+      date:
+        select: head > meta[name="publishdate"]
+        value: |
+          attribute(el, 'content')
+      lastModified:
+        select: none
+        value: |
+          parseTimestamp(headers['last-modified'], 'ddd, DD MMM YYYY hh:mm:ss GMT')
+      author:
+        select: head > meta[name="author"]
+        value: |
+          attribute(el, 'content')
+      language:
+        select: head > meta[name="lang"]
+        value: |
+          attribute(el, 'content')
+      content:
+        select: main
+        value: |
+          textContent(el)
+      primary-language-url:
+        select: head > meta[name="primary-language-url"]
         value: attribute(el, "content")
-      tags:
-        select: head > meta[name="tags"]
-        value: attribute(el, "content")
+  de-de:
+    <<: *default
+    include:
+      - '/de-de/**'
+    target: /de-de/query-index.json
+  en-us:
+    <<: *default
+    include:
+      - '/us-en/**'
+    target: /us-en/query-index.json
+  author:
+    include:
+      - '/authors/**'
+    target: /api/authors.json
+    properties:
+      path:
+        select: none
+        value: |
+          path
+      name:
+        select: head > meta[name="author"]
+        value: |
+          attribute(el, 'content')
+      image:
+        select: head > meta[property="og:image"]
+        value: |
+          match(attribute(el, 'content'), 'https:\/\/[^/]+(\/.*)')
+      position:
+        select: head > meta[name="position"]
+        value: |
+          attribute(el, 'content')
+      email:
+        select: head > meta[name="e-mail"]
+        value: |
+          attribute(el, 'content')

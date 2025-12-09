@@ -2,7 +2,8 @@
   {
     "id": "main",
     "components": [
-      "section"
+      "section",
+      "marginal"
     ]
   },
   {
@@ -11,17 +12,23 @@
       "text",
       "image",
       "button",
+      "custom-button",
       "title",
       "hero",
       "cards",
       "columns",
       "fragment",
-      "meta-links",
-      "quote",
-      "search",
-      "quick-search",
-      "navigation",
-      "card-slider"
+      "articlefeed",
+      "carousel",
+      "accordion",
+      "download",
+      "teaser",
+      "video",
+      "gallery",
+      "event-teaser",
+      "framed-grid",
+      "teaser-list",
+      "filters"
     ]
   },
   {
@@ -55,6 +62,12 @@
       "image",
       "button",
       "title"
+    ]
+  },
+  {
+    "id": "framed-grid",
+    "components": [
+      "framed-grid-item"
     ]
   },
   {

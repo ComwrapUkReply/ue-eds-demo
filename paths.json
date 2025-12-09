@@ -2,11 +2,16 @@
   "mappings": [
     "/content/ue-eds-demo/:/",
     "/content/ue-eds-demo/configuration:/.helix/config.json",
-    "/content/ue-eds-demo/metadata:/metadata.json",
     "/content/ue-eds-demo.resource/query-index.json:/query-index.json",
-    "/content/ue-eds-demo.resource/article-index.json:/article-index.json"
+    "/content/ue-eds-demo.resource/us-en/query-index.json:/us-en/query-index.json",
+    "/content/ue-eds-demo.resource/de-de/query-index.json:/de-de/query-index.json",
+    "/content/ue-eds-demo/metadata:/metadata.json",
+    "/content/ue-eds-demo/redirects:/redirects.json",
+    "/content/ue-eds-demo/api/authors.json",
+    "/content/ue-eds-demo/api/dictionary.json"
   ],
   "includes": [
-    "/content/ue-eds-demo/"
+    "/content/ue-eds-demo/",
+    "/content/dam/"
   ]
 }
